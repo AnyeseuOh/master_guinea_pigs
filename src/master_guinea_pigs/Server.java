@@ -13,9 +13,9 @@ public class Server {
     private static final int ROW        = 10;
     private static final int COL        = 10;
     private static final int pig_CNT   	= 5;
-    //±â´ÏÇÇ±× ¼ö
+    //ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ ï¿½ï¿½
     private static final int key 		= 1;
-    //¿­¼è ¼ö
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
     
     private static final String MINE    = " * ";
     private static final String KEY 	= " K ";
@@ -43,18 +43,18 @@ public class Server {
     	server.printMine();
         
     	for (int i = 0; i < cnt; i++) {
-    		System.out.println(pigArr_x[i] + " " + pigArr_y[i]);
+    		System.out.println(pigArr_x[i]*10 + pigArr_y[i]);
     	}
     	
         System.out.println(key_x + " "+ key_y);
     }
 
-    // »ý¼ºÀÚ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public Server(){
         mineArr = new String[ROW][COL];
     }
 
-    // ÃÊ±âÈ­ µ¥ÀÌÅÍ ÁÖÀÔ
+    // ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void setInit(){
         for(int i=0; i<ROW; i++){
             for (int j=0; j<COL; j++){
@@ -63,7 +63,7 @@ public class Server {
         }
     }
 
-    // ·£´ý °ªÀ¸·Î Áö·Ú ÁÖÀÔ
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void setMine(int mineCnt){
         Random ran = new Random();
 
@@ -71,11 +71,11 @@ public class Server {
             int row = ran.nextInt(ROW);
             int col = ran.nextInt(COL);
 
-            // ·£´ýÇÑ ¹è¿­ ÁÖ¼Ò¿¡ ÀÌ¹Ì Áö·Ú°¡ ÀÖ´Â °æ¿ì, ·çÇÁ¸¦ ÇÑ¹ø´õ µ¹·Á¼­ ·£´ýÀ§Ä¡ Àç»ý¼º
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½Ö¼Ò¿ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½
             if(mineArr[row][col].equals(MINE)){
                 mineCnt++;
             }
-            // °ªÀÌ ºñ¾î ÀÖ´Â °æ¿ì Áö·Ú¸¦ Ãß°¡ÇÑ´Ù
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ß°ï¿½ï¿½Ñ´ï¿½
             if(mineArr[row][col].equals(NONE)){
                 mineArr[row][col] = MINE;
                 
@@ -83,12 +83,12 @@ public class Server {
                 pigArr_y[cnt] = col;
                 cnt++;
                 
-                //Áö·ÚÀÇ À§Ä¡¸¦ ÀúÀåÇÑ´Ù
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
             }
         }
     }
     
- // ·£´ý °ªÀ¸·Î Áö·Ú ÁÖÀÔ
+ // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void setKey(int keyCnt){
         Random ran = new Random();
 
@@ -96,25 +96,25 @@ public class Server {
             int row = ran.nextInt(ROW);
             int col = ran.nextInt(COL);
 
-            // ·£´ýÇÑ ¹è¿­ ÁÖ¼Ò¿¡ ÀÌ¹Ì Áö·Ú°¡ ÀÖ´Â °æ¿ì, ·çÇÁ¸¦ ÇÑ¹ø´õ µ¹·Á¼­ ·£´ýÀ§Ä¡ Àç»ý¼º
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½Ö¼Ò¿ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½
             if(mineArr[row][col].equals(MINE)){
             	keyCnt++;
             }
-            // °ªÀÌ ºñ¾î ÀÖ´Â °æ¿ì Áö·Ú¸¦ Ãß°¡ÇÑ´Ù
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ß°ï¿½ï¿½Ñ´ï¿½
             if(mineArr[row][col].equals(NONE)){
                 mineArr[row][col] = KEY;
                 key_x = row;
                 key_y = col;
-                //keyÀÇ À§Ä¡¸¦ ÀúÀåÇÑ´Ù
+                //keyï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
             }
         }
     }
     
     
 
-    // Áö·Ú Á¸Àç¿©ºÎ ÆÇ´Ü
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ç¿©ï¿½ï¿½ ï¿½Ç´ï¿½
     private boolean isExistMine(int row, int col){
-        // ArrayIndexOutOfBoundsException ¿¹¹æ
+        // ArrayIndexOutOfBoundsException ï¿½ï¿½ï¿½ï¿½
         if(row < 0 || row >= ROW || col < 0 || col >= COL){
             return false;
         }
@@ -122,7 +122,7 @@ public class Server {
         return mineArr[row][col].equals(MINE);
     }
 
-    // ÇØ´ç ¹è¿­ ±âÁØ ÀÚ±â ÀÚ½ÅÀ» Á¦¿ÜÇÑ 8Ä­¿¡¼­ Áö·Ú¸¦ Ã£Àº ÈÄ Ä«¿îÆÃ ÇÑ´Ù.
+    // ï¿½Ø´ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú±ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 8Ä­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
     private int getMineNumber(int row, int col){
         int mineCnt = 0;
         if(isExistMine(row-1, col-1))mineCnt++;
@@ -137,14 +137,14 @@ public class Server {
         return mineCnt;
     }
 
-    // Áö·Ú ±ÙÃ³¿¡ Áö·Ú °³¼ö ¼ýÀÚ ÁÖÀÔ
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void setNumber(int row, int col){
         if(mineArr[row][col].equals(NONE) && getMineNumber(row,col)!=0){
             mineArr[row][col] = " "+getMineNumber(row,col)+" ";
         }
     }
 
-    // Áö·ÚÃ£±â ¹è¿­ Ãâ·Â
+    // ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½
     private void printMine(){
         for(int i=0; i<ROW; i++){
             for (int j=0; j<COL; j++){
