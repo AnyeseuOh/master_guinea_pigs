@@ -1,6 +1,10 @@
 package master_guinea_pigs;
 
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.io.*;
+import java.net.*;
 
 /**
  * Created by developerkhy@gmail.com on 2017. 6. 15.
@@ -13,48 +17,101 @@ public class Server {
     private static final int ROW        = 10;
     private static final int COL        = 10;
     private static final int pig_CNT   	= 5;
-    //ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ ï¿½ï¿½
+    //±â´ÏÇÇ±× ¼ö
     private static final int key 		= 1;
-    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+    //¿­¼è ¼ö
     
     private static final String MINE    = " * ";
     private static final String KEY 	= " K ";
     private static final String NONE    = " x ";
-    private String mineArr[][]          = null;
+    private static String mineArr[][]          = null;
     
     static int pigArr_x[] = new int[5];
     static int pigArr_y[] = new int[5];
-    
+
+    static int number1[] = new int[100];
+    static int number2[] = new int[100];
+    static int number3[] = new int[100];
+    static int number4[] = new int[100];
+    static int number5[] = new int[100];
+
     static int key_x;
 	static int key_y;
-    static int cnt=0;
+    static int cnt = 0;    
+    static int cnt_1 =0, cnt_2 = 0, cnt_3 = 0, cnt_4 = 0, cnt_5 = 0;
     
 
     public static void main(String[] args) {
-
     	Server server = new Server();
-
     	server.setInit();
-
     	server.setMine(pig_CNT);
-        
     	server.setKey(key);
-
     	server.printMine();
         
     	for (int i = 0; i < cnt; i++) {
     		System.out.println(pigArr_x[i]*10 + pigArr_y[i]);
     	}
+    	int key_value = key_x*10 + key_y;
+        System.out.println("\nKEY's position : " + key_value);
+        
+        System.out.print("\nNUMBER 1 :");
+        for (int i = 0; i < cnt_1; i++) {
+    		System.out.print(number1[i] + " ");
+    	}
     	
-        System.out.println(key_x + " "+ key_y);
+        System.out.print("\nNUMBER 2 :");
+    	for (int i = 0; i < cnt_2; i++) {
+    		System.out.print(number2[i]+ " ");
+    	}
+    	
+        System.out.print("\nNUMBER 3 :");
+    	for (int i = 0; i < cnt_3; i++) {
+    		System.out.print(number3[i]+ " ");
+    	}
+    	
+        System.out.print("\nNUMBER 4 :");
+    	for (int i = 0; i < cnt_4; i++) {
+    		System.out.print(number4[i]+ " ");
+    	}
+    	
+        System.out.print("\nNUMBER 5 :");
+    	for (int i = 0; i < cnt_5; i++) {
+    		System.out.print(number5[i]+ " ");
+    	}
+
+    	
+    	
+    	try {
+			ServerSocket listener = new ServerSocket(9998);
+			System.out.println("\nServer ¿¬°á Áß . . .");
+			ExecutorService pool = Executors.newFixedThreadPool(20);
+			//thread´Â 20°³±îÁö °¡´ÉÇÏ´Ù.
+			while (true) {
+				Socket sock = listener.accept();
+				System.out.println("Server ¿¬°á ¿Ï·á.");
+				try {
+					pool.execute(new Server_(sock));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} 
+		
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+
+
+
+        
+        
     }
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // »ý¼ºÀÚ
     public Server(){
         mineArr = new String[ROW][COL];
     }
 
-    // ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ÃÊ±âÈ­ µ¥ÀÌÅÍ ÁÖÀÔ
     private void setInit(){
         for(int i=0; i<ROW; i++){
             for (int j=0; j<COL; j++){
@@ -63,7 +120,7 @@ public class Server {
         }
     }
 
-    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ·£´ý °ªÀ¸·Î Áö·Ú ÁÖÀÔ
     private void setMine(int mineCnt){
         Random ran = new Random();
 
@@ -71,11 +128,11 @@ public class Server {
             int row = ran.nextInt(ROW);
             int col = ran.nextInt(COL);
 
-            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½Ö¼Ò¿ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½
+            // ·£´ýÇÑ ¹è¿­ ÁÖ¼Ò¿¡ ÀÌ¹Ì Áö·Ú°¡ ÀÖ´Â °æ¿ì, ·çÇÁ¸¦ ÇÑ¹ø´õ µ¹·Á¼­ ·£´ýÀ§Ä¡ Àç»ý¼º
             if(mineArr[row][col].equals(MINE)){
                 mineCnt++;
             }
-            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ß°ï¿½ï¿½Ñ´ï¿½
+            // °ªÀÌ ºñ¾î ÀÖ´Â °æ¿ì Áö·Ú¸¦ Ãß°¡ÇÑ´Ù
             if(mineArr[row][col].equals(NONE)){
                 mineArr[row][col] = MINE;
                 
@@ -83,12 +140,12 @@ public class Server {
                 pigArr_y[cnt] = col;
                 cnt++;
                 
-                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
+                //Áö·ÚÀÇ À§Ä¡¸¦ ÀúÀåÇÑ´Ù
             }
         }
     }
     
- // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+ // ·£´ý °ªÀ¸·Î Áö·Ú ÁÖÀÔ
     private void setKey(int keyCnt){
         Random ran = new Random();
 
@@ -96,55 +153,90 @@ public class Server {
             int row = ran.nextInt(ROW);
             int col = ran.nextInt(COL);
 
-            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½Ö¼Ò¿ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½
+            // ·£´ýÇÑ ¹è¿­ ÁÖ¼Ò¿¡ ÀÌ¹Ì Áö·Ú°¡ ÀÖ´Â °æ¿ì, ·çÇÁ¸¦ ÇÑ¹ø´õ µ¹·Á¼­ ·£´ýÀ§Ä¡ Àç»ý¼º
             if(mineArr[row][col].equals(MINE)){
             	keyCnt++;
             }
-            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ ï¿½ß°ï¿½ï¿½Ñ´ï¿½
+            // °ªÀÌ ºñ¾î ÀÖ´Â °æ¿ì Áö·Ú¸¦ Ãß°¡ÇÑ´Ù
             if(mineArr[row][col].equals(NONE)){
                 mineArr[row][col] = KEY;
                 key_x = row;
                 key_y = col;
-                //keyï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
+                //keyÀÇ À§Ä¡¸¦ ÀúÀåÇÑ´Ù
             }
         }
     }
     
     
 
-    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ç¿©ï¿½ï¿½ ï¿½Ç´ï¿½
-    private boolean isExistMine(int row, int col){
-        // ArrayIndexOutOfBoundsException ï¿½ï¿½ï¿½ï¿½
+    // Áö·Ú Á¸Àç¿©ºÎ ÆÇ´Ü
+    private static boolean isExistMine(int row, int col){
+        // ArrayIndexOutOfBoundsException ¿¹¹æ
         if(row < 0 || row >= ROW || col < 0 || col >= COL){
             return false;
         }
 
         return mineArr[row][col].equals(MINE);
     }
+    
+    private static boolean isExistKey(int row, int col){
+        // ArrayIndexOutOfBoundsException ¿¹¹æ
+        if(row < 0 || row >= ROW || col < 0 || col >= COL){
+            return false;
+        }
 
-    // ï¿½Ø´ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½ï¿½ ï¿½Ú±ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 8Ä­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¸ï¿½ Ã£ï¿½ï¿½ ï¿½ï¿½ Ä«ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½.
-    private int getMineNumber(int row, int col){
+        return mineArr[row][col].equals(KEY);
+    }
+    
+    
+
+    // ÇØ´ç ¹è¿­ ±âÁØ ÀÚ±â ÀÚ½ÅÀ» Á¦¿ÜÇÑ 8Ä­¿¡¼­ Áö·Ú¸¦ Ã£Àº ÈÄ Ä«¿îÆÃ ÇÑ´Ù.
+    private static int getMineNumber(int row, int col){
         int mineCnt = 0;
-        if(isExistMine(row-1, col-1))mineCnt++;
-        if(isExistMine(row-1, col))mineCnt++;
-        if(isExistMine(row-1, col+1))mineCnt++;
-        if(isExistMine(row, col-1))mineCnt++;
-        if(isExistMine(row, col+1))mineCnt++;
-        if(isExistMine(row+1, col-1))mineCnt++;
-        if(isExistMine(row+1, col))mineCnt++;
-        if(isExistMine(row+1, col+1))mineCnt++;
+        if(isExistMine(row-1, col-1) || isExistKey(row-1, col-1))mineCnt++;
+        if(isExistMine(row-1, col) || isExistKey(row-1, col))mineCnt++;
+        if(isExistMine(row-1, col+1)|| isExistKey(row-1, col+1))mineCnt++;
+        if(isExistMine(row, col-1)|| isExistKey(row, col-1))mineCnt++;
+        if(isExistMine(row, col+1)|| isExistKey(row, col+1))mineCnt++;
+        if(isExistMine(row+1, col-1)|| isExistKey(row+1, col-1))mineCnt++;
+        if(isExistMine(row+1, col)|| isExistKey(row+1, col))mineCnt++;
+        if(isExistMine(row+1, col+1)|| isExistKey(row+1, col+1))mineCnt++;
 
         return mineCnt;
     }
 
-    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // Áö·Ú ±ÙÃ³¿¡ Áö·Ú °³¼ö ¼ýÀÚ ÁÖÀÔ
     private void setNumber(int row, int col){
         if(mineArr[row][col].equals(NONE) && getMineNumber(row,col)!=0){
             mineArr[row][col] = " "+getMineNumber(row,col)+" ";
         }
+        
+        if (getMineNumber(row, col) == 1) {
+        	number1[cnt_1] = row*10 + col;
+        	cnt_1++;
+        }
+        if (getMineNumber(row, col) == 2) {
+        	number2[cnt_2] = row*10 + col;
+        	cnt_2++;
+        }
+        if (getMineNumber(row, col) == 3) {
+        	number3[cnt_3] = row*10 + col;
+        	cnt_3++;
+        }
+        if (getMineNumber(row, col) == 4) {
+        	number4[cnt_4] = row*10 + col;
+        	cnt_4++;
+        }
+        if (getMineNumber(row, col) == 5) {
+        	number5[cnt_5] = row*10 + col;
+        	cnt_5++;
+        }
+
+        
+        
     }
 
-    // ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ ï¿½è¿­ ï¿½ï¿½ï¿½
+    // Áö·ÚÃ£±â ¹è¿­ Ãâ·Â
     private void printMine(){
         for(int i=0; i<ROW; i++){
             for (int j=0; j<COL; j++){
@@ -154,6 +246,109 @@ public class Server {
             System.out.println();
         }
     }
-}
+    
+    
+    private static class Server_ implements Runnable {
+		Socket socket = null;
+		
+		public Server_(Socket socket){
+			this.socket = socket;
+		}
+		
+		//@Override
+		public void run() {
+			ServerSocket listener = null;
 
+		try {
+
+			BufferedReader in = new BufferedReader(
+						new InputStreamReader(socket.getInputStream()));
+			BufferedWriter out = new BufferedWriter(
+						new OutputStreamWriter(socket.getOutputStream()));
+			
+
+			
+			while (true) {
+				String inputMessage = in.readLine();
+				String res = "";
+				if (inputMessage.equals("GAMESTART")) {
+					
+					
+					res+="GPigs:";
+			    	for (int i = 0; i < cnt; i++) {
+			    		System.out.println(pigArr_x[i]*10 + pigArr_y[i]);
+			    		res += pigArr_x[i]*10 + pigArr_y[i] + " ";
+			    	}
+			    	int key_value = key_x*10 + key_y;
+			        System.out.println("\nKEY: " + key_value);
+
+			        res += "KEY: " + key_value + " ";
+
+			        
+			        System.out.print("\nNUMBER1:");
+			        res+="NUMBER1:";
+			        for (int i = 0; i < cnt_1; i++) {
+			    		System.out.print(number1[i] + " ");
+			    		res += number1[i] + " ";
+			    	}
+			    	
+			        System.out.print("\nNUMBER2:");
+			        res+="NUMBER2:";
+			        for (int i = 0; i < cnt_2; i++) {
+			    		System.out.print(number2[i] + " ");
+			    		res += number2[i] + " ";
+			        }
+			    	
+			        System.out.print("\nNUMBER3:");
+			        res+="NUMBER3:";
+			        for (int i = 0; i < cnt_3; i++) {
+			    		System.out.print(number3[i] + " ");
+			    		res += number3[i] + " ";
+			    	}
+
+			    	
+			        System.out.print("\nNUMBER4:");
+			        res+="NUMBER4:";
+			        for (int i = 0; i < cnt_4; i++) {
+			    		System.out.print(number4[i] + " ");
+			    		res += number4[i] + " ";
+			    	}
+
+			    	
+			        System.out.print("\nNUMBER5:");
+			        res+="NUMBER5:";
+			        for (int i = 0; i < cnt_5; i++) {
+			    		System.out.print(number5[i] + " ");
+			    		res += number5[i] + " ";
+			    	}
+			        out.write(res+"\n");
+			        out.flush();
+					
+					
+					
+					
+				}
+				
+
+			}
+		
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				if(socket != null) socket.close(); // Åë½Å¿ë ¼ÒÄÏ ´Ý±â
+				if(listener != null) listener.close(); // ¼­¹ö ¼ÒÄÏ ´Ý±â
+			} catch (IOException e) {
+			System.out.println("Å¬¶óÀÌ¾ðÆ®¿Í ÁÖ°í ¹Þ´Â Áß ¿À·ù°¡ ¹ß»ýÇß½À´Ï´Ù.");
+			}
+		}
+			
+			
+			
+			
+		}
+	}
+
+    
+}
 
