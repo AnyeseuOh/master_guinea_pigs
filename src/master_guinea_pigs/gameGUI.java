@@ -19,9 +19,7 @@ public class gameGUI implements Runnable {
 	static JFrame frame = new JFrame("기니피그를 잡아라!");
 
 	int key;
-	private static int[] mtr_one = new int[] { 13, 65, 93, 54, 81 };
-	private static int[] mtr_two, mtr_three, mtr_four, mtr_five;
-	private static int[] pig = new int[] { 12, 64, 92, 53, 91 };
+	private static int[] mtr_one, mtr_two, mtr_three, mtr_four, mtr_five, pig;
 
 	ImageIcon room = new ImageIcon("ground2.png");
 	Image newImage = room.getImage();
@@ -42,7 +40,15 @@ public class gameGUI implements Runnable {
 	/*
 	 * method runGUI gets imageicon value of object image
 	 */
-	public void runGUI() {
+	public void runGUI(int[] _pig, int[] _1, int[] _2, int[] _3, int[] _4, int[] _5) {
+		
+		pig = _pig;
+		mtr_one = _1;
+		mtr_two = _2;
+		mtr_three = _3;
+		mtr_four = _4;
+		mtr_five = _5;
+		
 		frame.setBounds(0, 0, 1042, 816);
 		frame.getContentPane().add(panel);
 		ImageIcon grass = new ImageIcon("tileGrass2.png");
@@ -80,6 +86,46 @@ public class gameGUI implements Runnable {
 			panel.add(comp);
 			jlp.add(comp,1);
 		}
+		
+		/* Get map information from the server and sprinkle it-> Guinea Pig */
+		for (int i = 0; i < mtr_two.length; i++) {
+			int x_ = mtr_two[i] % 10;
+			int y_ = mtr_two[i] / 10;
+			JLabel comp = new JLabel(two);
+			comp.setBounds(x_*64+64, y_*64+64, 64, 64);
+			panel.add(comp);
+			jlp.add(comp,1);
+		}
+		
+		/* Get map information from the server and sprinkle it-> Guinea Pig */
+		for (int i = 0; i < mtr_three.length; i++) {
+			int x_ = mtr_three[i] % 10;
+			int y_ = mtr_three[i] / 10;
+			JLabel comp = new JLabel(three);
+			comp.setBounds(x_*64+64, y_*64+64, 64, 64);
+			panel.add(comp);
+			jlp.add(comp,1);
+		}
+		
+		/* Get map information from the server and sprinkle it-> Guinea Pig */
+		for (int i = 0; i < mtr_four.length; i++) {
+			int x_ = mtr_four[i] % 10;
+			int y_ = mtr_four[i] / 10;
+			JLabel comp = new JLabel(four);
+			comp.setBounds(x_*64+64, y_*64+64, 64, 64);
+			panel.add(comp);
+			jlp.add(comp,1);
+		}
+		
+		/* Get map information from the server and sprinkle it-> Guinea Pig */
+		for (int i = 0; i < mtr_five.length; i++) {
+			int x_ = mtr_five[i] % 10;
+			int y_ = mtr_five[i] / 10;
+			JLabel comp = new JLabel(five);
+			comp.setBounds(x_*64+64, y_*64+64, 64, 64);
+			panel.add(comp);
+			jlp.add(comp,1);
+		}
 
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -113,7 +159,13 @@ public class gameGUI implements Runnable {
 	}
 
 	public void run() {
-		this.runGUI();
+		int[] temp = new int[]{1,4,88,33,56};
+		int[] temp1 = new int[]{2,5,89,34,57};
+		int[] temp2 = new int[]{3,6,90,35,58};
+		int[] temp3 = new int[]{4,7,91,36,59};
+		int[] temp4 = new int[]{5,8,92,37,60};
+		int[] temp5 = new int[]{6,9,93,38,61};
+		this.runGUI(temp, temp1, temp2, temp3, temp4, temp5);
 	}
 
 	private class TheHandler implements ActionListener {
@@ -122,6 +174,7 @@ public class gameGUI implements Runnable {
 				if (event.getSource() == button[i]) {
 					System.out.println("object_clicked" + i);
 					button[i].setVisible(false); // Get rid of the button
+					//Send_socket.out.println("object_clicked" + i);// send to server
 				}
 			}
 		}
