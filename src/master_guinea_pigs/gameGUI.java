@@ -25,7 +25,7 @@ public class gameGUI implements Runnable {
 	int key;
 	private static int[] mtr_one, mtr_two, mtr_three, mtr_four, mtr_five, pig;
 	int pig_x_me = 810;
-	int pig_y_me = 625;
+	int pig_y_me = 625;//
 
 	ImageIcon room = new ImageIcon("ground2.png");
 	Image newImage = room.getImage();
