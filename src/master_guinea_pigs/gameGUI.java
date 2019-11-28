@@ -29,7 +29,7 @@ public class gameGUI implements Runnable {
 
 	ImageIcon room = new ImageIcon("ground2.png");
 	Image newImage = room.getImage();
-	Image changedImage = newImage.getScaledInstance(1024, 768, Image.SCALE_SMOOTH);
+	Image changedImage = newImage.getScaledInstance(1024+64, 768, Image.SCALE_SMOOTH);
 	ImageIcon newRoom = new ImageIcon(changedImage);
 	JLayeredPane jlp = frame.getLayeredPane();
 	
@@ -60,7 +60,7 @@ public class gameGUI implements Runnable {
 		mtr_five = _5;
 		key = keyyy;
 		
-		frame.setBounds(0, 0, 1042, 816);
+		frame.setBounds(0, 0, 1042+64, 816);
 		frame.getContentPane().add(panel);
 		ImageIcon grass = new ImageIcon("tileGrass2.png");
 		
@@ -235,7 +235,7 @@ public class gameGUI implements Runnable {
 								pig_x_me = pig_x_me + 50;
 					            break; 
 						}
-						jail_.setBounds(820, 178, 190, 555);
+						jail_.setBounds(820, 178, 250, 555);
 						panel.add(jail_);
 						jlp.add(jail_,1);
 					}
