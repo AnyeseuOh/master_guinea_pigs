@@ -12,15 +12,19 @@ import java.net.*;
  */
 
 public class Server {
-	
+
 	private static int max_client = 100;
 
 	private static int game_start_flag = 0; // flag variable checks if game is started
-	private static HashSet<String> names = new HashSet<String>(); // hashset that stores user's name -> prevent same username
-	private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>(); // hashset that stores client's ip address -> also prevent same ip
-	private static HashMap<String, PrintWriter> info = new HashMap<String, PrintWriter>(); // hashmap that maps username and user's ip address hashmap
+	private static HashSet<String> names = new HashSet<String>(); // hashset that stores user's name -> prevent same
+																	// username
+	private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>(); // hashset that stores client's ip address
+																				// -> also prevent same ip
+	private static HashMap<String, PrintWriter> info = new HashMap<String, PrintWriter>(); // hashmap that maps username
+																							// and user's ip address
+																							// hashmap
 	private static int client_count = 0; // current user numbers in game
-	
+
 	private static String[] user = new String[max_client]; // store user name -> map with index (hashmap)
 	private static PrintWriter[] ID = new PrintWriter[max_client]; // store user's address -> map with index(hashmap)
 
@@ -50,12 +54,14 @@ public class Server {
 	static int cnt = 0;
 	static int cnt_1 = 0, cnt_2 = 0, cnt_3 = 0, cnt_4 = 0, cnt_5 = 0;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Server server = new Server();
 		server.setInit();
 		server.setMine(pig_CNT);
 		server.setKey(key);
 		server.printMine();
+
+		ServerSocket listener = new ServerSocket(9998);
 
 		for (int i = 0; i < cnt; i++) {
 			System.out.println(pigArr_x[i] * 10 + pigArr_y[i]);
@@ -89,22 +95,13 @@ public class Server {
 		}
 
 		try {
-			ServerSocket listener = new ServerSocket(9998);
-			System.out.println("\nServer ���� �� . . .");
-			ExecutorService pool = Executors.newFixedThreadPool(20);
-			// thread�� 20������ �����ϴ�.
 			while (true) {
-				Socket sock = listener.accept();
-				System.out.println("Server ���� �Ϸ�.");
-				try {
-					pool.execute(new Server_(sock));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				new Server_(listener.accept()).run();
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			listener.close();
 		}
 
 	}
@@ -267,13 +264,10 @@ public class Server {
 			try {
 				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 				out = new PrintWriter(socket.getOutputStream(), true);
-				
-				while (true) {
-					String inputMessage = in.readLine();
-					String res = "";
 
+				while (true) {
 					/* 게임이 시작되었는지, 현재 대기방인지 검사 */
-					if (game_start_flag == 0 && !inputMessage.equals("GAMESTART")) {
+					if (game_start_flag == 0) {
 						out.println("SUBMITNAME");
 						name = in.readLine();
 						if (name == null) {
@@ -292,16 +286,21 @@ public class Server {
 							}
 						}
 					}
+				}
+
+				writers.add(out);
+				out.println("MESSAGE " + "[대기실에 입장하셨습니다]");
+				user[client_count] = name;
+				ID[client_count] = out;
+
+				client_count++;
+
+				info.put(name, out);
+
+				while (true) {
+					String inputMessage = in.readLine();
+					String res = "";
 					
-		            writers.add(out);
-		            out.println("MESSAGE " + "[대기실에 입장하셨습니다]");
-		            user[client_count] = name;
-		            ID[client_count] = out;
-
-		            client_count++;
-
-		            info.put(name, out);
-
 					if (inputMessage.equals("GAMESTART")) {
 						game_start_flag = 1; // 플레그 켜줌
 
@@ -351,11 +350,8 @@ public class Server {
 						}
 						out.println(res + "\n");
 						out.flush();
-
 					}
-
 				}
-
 			} catch (IOException e) {
 				System.out.println(e.getMessage());
 			} finally {
