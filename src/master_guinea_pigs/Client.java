@@ -27,15 +27,15 @@ public class Client {
 			
 			socket = new Socket(IPaddress, portN);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
-	         out = new PrintWriter(socket.getOutputStream(), true);
+	        out = new PrintWriter(socket.getOutputStream(), true);
 			while (true) {
-				System.out.print("ÀÔ·Â°ª:"); // ÇÁ·ÒÇÁÆ®
-				String outputMessage = scanner.nextLine(); // Å°º¸µå¿¡¼­ ¼ö½Ä ÀÐ±â
+				System.out.print("ï¿½Ô·Â°ï¿½:"); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+				String outputMessage = scanner.nextLine(); // Å°ï¿½ï¿½ï¿½å¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½
 				
-				out.write(outputMessage + "\n"); // Å°º¸µå¿¡¼­ ÀÐÀº ¼ö½Ä ¹®ÀÚ¿­ Àü¼Û
+				out.write(outputMessage + "\n"); // Å°ï¿½ï¿½ï¿½å¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½ï¿½ï¿½ï¿½
 				out.flush();
 				
-				String inputMessage = in.readLine(); // ¼­¹ö·ÎºÎÅÍ °è»ê °á°ú ¼ö½Å
+				String inputMessage = in.readLine(); // ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 				System.out.println(inputMessage);
 				
 				
@@ -45,9 +45,9 @@ public class Client {
 		} finally {
 		try {
 			scanner.close();
-			if(socket != null) socket.close(); // Å¬¶óÀÌ¾ðÆ® ¼ÒÄÏ ´Ý±â
+			if(socket != null) socket.close(); // Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½Ý±ï¿½
 		} catch (IOException e) {
-			System.out.println("¿À·ù°¡ ¹ß»ýÇß½À´Ï´Ù.");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.");
 		}
 		}
 		
