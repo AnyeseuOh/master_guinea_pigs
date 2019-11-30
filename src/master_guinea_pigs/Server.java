@@ -266,7 +266,7 @@ public class Server {
 				out = new PrintWriter(socket.getOutputStream(), true);
 
 				while (true) {
-					/* 게임이 시작되었는지, 현재 대기방인지 검사 */
+					/* Check if the game has started or if it is currently waiting */
 					if (game_start_flag == 0) {
 						out.println("SUBMITNAME");
 						name = in.readLine();
@@ -279,17 +279,17 @@ public class Server {
 							if (!names.contains(name)) {
 								names.add(name);
 
-								sendToallclient("MESSAGE " + "새로운 유저 '" + name + "' 님이 입장하셨습니다.");
+								sendToallclient("MESSAGE " + "New user '" + name + "' has entered.");
 								break;
 							} else {
-								out.println("ERROR " + "이미 사용중인 닉네임입니다.");
+								out.println("ERROR " + "This nickname is already using.");
 							}
 						}
 					}
 				}
 
 				writers.add(out);
-				out.println("MESSAGE " + "[대기실에 입장하셨습니다]");
+				out.println("MESSAGE " + "[You have entered the waiting room]");
 				user[client_count] = name;
 				ID[client_count] = out;
 
@@ -302,7 +302,7 @@ public class Server {
 					String res = "";
 					
 					if (inputMessage.equals("GAMESTART")) {
-						game_start_flag = 1; // 플레그 켜줌
+						game_start_flag = 1; // flag on
 
 						res += "GPigs:";
 						for (int i = 0; i < cnt; i++) {
