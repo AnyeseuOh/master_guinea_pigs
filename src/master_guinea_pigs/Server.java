@@ -31,9 +31,9 @@ public class Server {
 	private static final int ROW = 10;
 	private static final int COL = 10;
 	private static final int pig_CNT = 5;
-	// ����Ǳ� ��
+	// the number of g_pig
 	private static final int key = 1;
-	// ���� ��
+	// the number of keys
 
 	private static final String MINE = " * ";
 	private static final String KEY = " K ";
@@ -106,12 +106,12 @@ public class Server {
 
 	}
 
-	// ������
+	
 	public Server() {
 		mineArr = new String[ROW][COL];
 	}
 
-	// �ʱ�ȭ ������ ����
+	// initial data
 	private void setInit() {
 		for (int i = 0; i < ROW; i++) {
 			for (int j = 0; j < COL; j++) {
@@ -120,7 +120,7 @@ public class Server {
 		}
 	}
 
-	// ���� ������ ���� ����
+	// set Mine to random value
 	private void setMine(int mineCnt) {
 		Random ran = new Random();
 
@@ -128,11 +128,11 @@ public class Server {
 			int row = ran.nextInt(ROW);
 			int col = ran.nextInt(COL);
 
-			// ������ �迭 �ּҿ� �̹� ���ڰ� �ִ� ���, ������ �ѹ��� ������ ������ġ �����
+			// if mine exists in random address, re-insert
 			if (mineArr[row][col].equals(MINE)) {
 				mineCnt++;
 			}
-			// ���� ��� �ִ� ��� ���ڸ� �߰��Ѵ�
+			// if empty, add the mine
 			if (mineArr[row][col].equals(NONE)) {
 				mineArr[row][col] = MINE;
 
@@ -140,12 +140,12 @@ public class Server {
 				pigArr_y[cnt] = col;
 				cnt++;
 
-				// ������ ��ġ�� �����Ѵ�
+				
 			}
 		}
 	}
 
-	// ���� ������ ���� ����
+	// set Key to random value
 	private void setKey(int keyCnt) {
 		Random ran = new Random();
 
@@ -153,23 +153,23 @@ public class Server {
 			int row = ran.nextInt(ROW);
 			int col = ran.nextInt(COL);
 
-			// ������ �迭 �ּҿ� �̹� ���ڰ� �ִ� ���, ������ �ѹ��� ������ ������ġ �����
+			// if mine exists in random address, re-insert
 			if (mineArr[row][col].equals(MINE)) {
 				keyCnt++;
 			}
-			// ���� ��� �ִ� ��� ���ڸ� �߰��Ѵ�
+			// if empty, add the key
 			if (mineArr[row][col].equals(NONE)) {
 				mineArr[row][col] = KEY;
 				key_x = row;
 				key_y = col;
-				// key�� ��ġ�� �����Ѵ�
+				
 			}
 		}
 	}
 
-	// ���� ���翩�� �Ǵ�
+	// judge whether mine is present
 	private static boolean isExistMine(int row, int col) {
-		// ArrayIndexOutOfBoundsException ����
+		// ArrayIndexOutOfBoundsException prevention
 		if (row < 0 || row >= ROW || col < 0 || col >= COL) {
 			return false;
 		}
@@ -178,7 +178,7 @@ public class Server {
 	}
 
 	private static boolean isExistKey(int row, int col) {
-		// ArrayIndexOutOfBoundsException ����
+		// ArrayIndexOutOfBoundsException prevention
 		if (row < 0 || row >= ROW || col < 0 || col >= COL) {
 			return false;
 		}
@@ -186,7 +186,7 @@ public class Server {
 		return mineArr[row][col].equals(KEY);
 	}
 
-	// �ش� �迭 ���� �ڱ� �ڽ��� ������ 8ĭ���� ���ڸ� ã�� �� ī���� �Ѵ�.
+	// Count mine after finding mines in 8 spaces except for yourself.
 	private static int getMineNumber(int row, int col) {
 		int mineCnt = 0;
 		if (isExistMine(row - 1, col - 1) || isExistKey(row - 1, col - 1))
@@ -209,7 +209,7 @@ public class Server {
 		return mineCnt;
 	}
 
-	// ���� ��ó�� ���� ���� ���� ����
+	// Insert number of mines near mine
 	private void setNumber(int row, int col) {
 		if (mineArr[row][col].equals(NONE) && getMineNumber(row, col) != 0) {
 			mineArr[row][col] = " " + getMineNumber(row, col) + " ";
@@ -238,7 +238,7 @@ public class Server {
 
 	}
 
-	// ����ã�� �迭 ���
+	// print minesweeper array
 	private void printMine() {
 		for (int i = 0; i < ROW; i++) {
 			for (int j = 0; j < COL; j++) {
