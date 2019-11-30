@@ -2,6 +2,8 @@ package master_guinea_pigs;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -16,19 +18,25 @@ import java.net.UnknownHostException;
 import java.lang.Object;
 
 import javax.swing.*;
+
+import master_guinea_pigs.gameGUI;
+
 import java.util.*;
 
 public class Client implements Runnable {
 	static BufferedReader in;
 	static PrintWriter out;
+	
 	JPanel panel = new JPanel();
+	
 	JTextField textField = new JTextField(30);
 	JTextArea messageArea = new JTextArea(4, 30);
+	JTextArea showInfo = new JTextArea(); //user state
 
 	static JFrame frame = new JFrame("Master geinea pigs");
 	ImageIcon flat = new ImageIcon("flat.png");
 	Image newflat = flat.getImage();
-	Image changedflat = newflat.getScaledInstance(1306, 816, Image.SCALE_SMOOTH);
+	Image changedflat = newflat.getScaledInstance(1090, 816, Image.SCALE_SMOOTH);
 	ImageIcon newFlat = new ImageIcon(changedflat);
 
 	JPanel panel_flat = new JPanel() {
@@ -36,18 +44,35 @@ public class Client implements Runnable {
 			g.drawImage(newFlat.getImage(), 18, 18,null);}};
 
 	public Client() {
+		
+		gameGUI.frame.setTitle("[Master geinea pigs] - Wating Room");
+		gameGUI.frame.getContentPane().setLayout(null);
+		
 		messageArea.setEditable(false);
 		textField.setEditable(false);
-		gameGUI.frame.setBounds(0, 0, 1306, 816);
+		showInfo.setEditable(false);
+		
+		gameGUI.frame.setBounds(0, 0, 1090, 816);
 		gameGUI.frame.getContentPane().add(panel_flat);
+		
+		textField.setBounds(14, 710, 600, 29);
 		gameGUI.frame.getContentPane().add(textField, "South");
-		gameGUI.frame.getContentPane().add(new JScrollPane(messageArea), "East");
+		//textField.setColumns(10);
+		
+		messageArea.setBounds(14, 15, 600, 683);
+		gameGUI.frame.getContentPane().add(messageArea);
+		//gameGUI.frame.getContentPane().add(new JScrollPane(messageArea), "East");
+		
+		showInfo.setText("[ User state ]");
+		showInfo.setBounds(630, 15, 430, 719); // 가로시작점, 세로시작점, 가로길이, 세로길이
+		gameGUI.frame.getContentPane().add(showInfo);
+		
 		gameGUI.frame.setVisible(true);
 		textField.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				out.println(textField.getText());
-				textField.setText("");
+				textField.setText("");  //user chatting input
 			}
 		});
 	}
@@ -56,12 +81,12 @@ public class Client implements Runnable {
 	 * get server's address
 	 */
 	private String getServerAddress() {
-		return JOptionPane.showInputDialog(frame, "서버의 IP주소를 입력해주세요:", "Master geinea pigs", JOptionPane.PLAIN_MESSAGE);
+		return JOptionPane.showInputDialog(frame, "Input IP address:", "Master geinea pigs", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	/* get users nickname */
 	private String getsName() {
-		return JOptionPane.showInputDialog(frame, "게임에서 사용할 닉네임을 입력해주세요:", "Master geinea pigs",
+		return JOptionPane.showInputDialog(frame, "Enter your name:", "Master geinea pigs",
 				JOptionPane.PLAIN_MESSAGE);
 	}
 
@@ -83,13 +108,24 @@ public class Client implements Runnable {
 			String line = in.readLine();
 			if (line.startsWith("SUBMITNAME")) { // get user's nickname
 				out.println(getsName());
+				out.flush();
+				
+				//String path = Server.class.getResource("").getPath();
+		        File file = new File("serverinfo.txt");
+		        FileWriter fw = new FileWriter(file, true);
+
+		        fw.write(getsName() + " 0 0"+ "\n");
+		        fw.flush();
+
+		        
 			} else if (line.startsWith("NAMEACCEPTED")) { // if server accept the username
 				textField.setEditable(true);
-				out.println("GAMESTART");//임시
+				out.println("GAMESTART");//�엫�떆
 			} else if (line.startsWith("MESSAGE")) { // if client get message protocol the message is for chatting
 				// if (line.substring(8).equals("game start"))
 				messageArea.append(line.substring(8) + "\n");
 			} else if (line.startsWith("ERROR")) {
+				//System.out.println("ERROR --"); 이름 중복검사 확인
 				JOptionPane.showMessageDialog(null, line.substring(6));
 			} else if (line.startsWith("GAMESTART")) {
 				panel_flat.setVisible(false);
