@@ -418,18 +418,18 @@ public class Server {
               st = new StringTokenizer(line, " ");
               
               user = st.nextToken();
-              pw = st.nextToken();
-              name = st.nextToken();
-              last_time = st.nextToken();
+              //pw = st.nextToken();
+              //name = st.nextToken();
+              //last_time = st.nextToken();
               win = Integer.parseInt(st.nextToken());
               lose = Integer.parseInt(st.nextToken());
               
               u_info[i] = new UserInfo();
               
               u_info[i].user = user;
-              u_info[i].pw = pw;
-              u_info[i].name = name;
-              u_info[i].last_time = last_time;
+              //u_info[i].pw = pw;
+              //u_info[i].name = name;
+              //u_info[i].last_time = last_time;
               u_info[i].win = win;
               u_info[i].lose = lose;
               
@@ -442,9 +442,9 @@ public class Server {
 }
 class UserInfo {
     String user;
-    String pw;
-    String name;
-    String last_time;
+    //String pw;
+    //String name;
+    //String last_time;
     int win;
     int lose;
     
@@ -456,7 +456,7 @@ class UserInfo {
        return this.user = User;
     }
     
-    
+    /*
     public String getPw() {
        return pw;
     }
@@ -471,7 +471,7 @@ class UserInfo {
     public String setLastTime(String last_time) {
        return this.last_time = last_time;
     }
-    
+    */
     public int getWin() {
        return this.win;
     }
