@@ -23,6 +23,8 @@ public class Server {
 	private static HashMap<String, PrintWriter> info = new HashMap<String, PrintWriter>(); // hashmap that maps username
 																							// and user's ip address
 																							// hashmap
+	private static HashMap<String, String> history = new HashMap<String, String>();
+
 	private static int client_count = 0; // current user numbers in game
 
 	private static String[] user = new String[max_client]; // store user name -> map with index (hashmap)
@@ -61,8 +63,6 @@ public class Server {
 		server.setKey(key);
 		server.printMine();
 
-		ServerSocket listener = new ServerSocket(9998);
-
 		for (int i = 0; i < cnt; i++) {
 			System.out.println(pigArr_x[i] * 10 + pigArr_y[i]);
 		}
@@ -94,19 +94,18 @@ public class Server {
 			System.out.print(number5[i] + " ");
 		}
 
+		ServerSocket listener = null;
+		ExecutorService pool = Executors.newFixedThreadPool(100);
 		try {
+			listener = new ServerSocket(9998);
 			while (true) {
-				new Server_(listener.accept()).run();
+				pool.execute(new Server_(listener.accept()));
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		} finally {
 			listener.close();
 		}
-
 	}
 
-	
 	public Server() {
 		mineArr = new String[ROW][COL];
 	}
@@ -140,7 +139,6 @@ public class Server {
 				pigArr_y[cnt] = col;
 				cnt++;
 
-				
 			}
 		}
 	}
@@ -162,7 +160,7 @@ public class Server {
 				mineArr[row][col] = KEY;
 				key_x = row;
 				key_y = col;
-				
+
 			}
 		}
 	}
@@ -250,7 +248,7 @@ public class Server {
 	}
 
 	private static class Server_ implements Runnable {
-		private Socket socket = null;
+		private Socket socket;
 		private String name;
 		private BufferedReader in;
 		private PrintWriter out;
@@ -275,10 +273,9 @@ public class Server {
 						}
 						synchronized (names) {
 							sendToallclient("CONNECT " + name + " is connected.\n");
-
 							if (!names.contains(name)) {
 								names.add(name);
-
+								System.out.println(names);
 								sendToallclient("MESSAGE " + "New user '" + name + "' has entered.");
 								break;
 							} else {
@@ -287,6 +284,7 @@ public class Server {
 						}
 					}
 				}
+				out.println("NAMEACCEPTED");
 
 				writers.add(out);
 				out.println("MESSAGE " + "[You have entered the waiting room]");
@@ -298,9 +296,10 @@ public class Server {
 				info.put(name, out);
 
 				while (true) {
+
 					String inputMessage = in.readLine();
 					String res = "";
-					
+
 					if (inputMessage.equals("GAMESTART")) {
 						game_start_flag = 1; // flag on
 
@@ -349,9 +348,11 @@ public class Server {
 							res += number5[i] + " ";
 						}
 						out.println(res + "\n");
-						out.flush();
+					} else if (!inputMessage.equals("")) {
+						sendToallclient("MESSAGE " + name + ": " + inputMessage);
 					}
 				}
+
 			} catch (IOException e) {
 				System.out.println(e.getMessage());
 			} finally {

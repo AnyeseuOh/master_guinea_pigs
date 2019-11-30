@@ -9,48 +9,107 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Client {
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.UnknownHostException;
+import java.lang.Object;
 
-	
-	static String IPaddress = "localhost";	
-	static int portN = 9998;
-	
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		BufferedReader in = null;
-		PrintWriter out = null;
-		Socket socket = null;
-		Scanner scanner = new Scanner(System.in);
-		
-		try {
-			
-			socket = new Socket(IPaddress, portN);
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
-	        out = new PrintWriter(socket.getOutputStream(), true);
-			while (true) {
-				System.out.print("�Է°�:"); // ������Ʈ
-				String outputMessage = scanner.nextLine(); // Ű���忡�� ���� �б�
-				
-				out.write(outputMessage + "\n"); // Ű���忡�� ���� ���� ���ڿ� ����
-				out.flush();
-				
-				String inputMessage = in.readLine(); // �����κ��� ��� ��� ����
-				System.out.println(inputMessage);
-				
-				
+import javax.swing.*;
+import java.util.*;
+
+public class Client implements Runnable {
+	static BufferedReader in;
+	static PrintWriter out;
+	JPanel panel = new JPanel();
+	JTextField textField = new JTextField(30);
+	JTextArea messageArea = new JTextArea(4, 30);
+
+	static JFrame frame = new JFrame("Master geinea pigs");
+	ImageIcon flat = new ImageIcon("flat.png");
+	Image newflat = flat.getImage();
+	Image changedflat = newflat.getScaledInstance(790, 600, Image.SCALE_SMOOTH);
+	ImageIcon newFlat = new ImageIcon(changedflat);
+
+	JPanel panel_flat = new JPanel() {
+		public void paintComponent(Graphics g) {
+			g.drawImage(newFlat.getImage(), 18, 18,null);}};
+
+	public Client() {
+		messageArea.setEditable(false);
+		textField.setEditable(false);
+		gameGUI.frame.setBounds(0, 0, 1400, 800);
+		gameGUI.frame.getContentPane().add(panel_flat);
+		gameGUI.frame.getContentPane().add(textField, "South");
+		gameGUI.frame.getContentPane().add(new JScrollPane(messageArea), "East");
+		gameGUI.frame.setVisible(true);
+		textField.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				out.println(textField.getText());
+				textField.setText("");
 			}
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		} finally {
-		try {
-			scanner.close();
-			if(socket != null) socket.close(); // Ŭ���̾�Ʈ ���� �ݱ�
-		} catch (IOException e) {
-			System.out.println("������ �߻��߽��ϴ�.");
-		}
-		}
-		
+		});
 	}
 
+	/*
+	 * get server's address
+	 */
+	private String getServerAddress() {
+		return JOptionPane.showInputDialog(frame, "서버의 IP주소를 입력해주세요:", "Master geinea pigs", JOptionPane.PLAIN_MESSAGE);
+	}
+
+	/* get users nickname */
+	private String getsName() {
+		return JOptionPane.showInputDialog(frame, "게임에서 사용할 닉네임을 입력해주세요:", "Master geinea pigs",
+				JOptionPane.PLAIN_MESSAGE);
+	}
+
+	/*
+	 * runChat method send and gets reply with server with various protocol
+	 */
+	void runChat(String[] players, int page) throws IOException {
+		// Make connection and initialize streams
+
+		String serverAddress = new String(getServerAddress());
+		JFrame actionFrame = new JFrame();
+		Socket socket = new Socket(serverAddress, 9998);
+		boolean is_kicked = false;
+
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+		out = new PrintWriter(socket.getOutputStream(), true);
+
+		while (true) {
+			String line = in.readLine();
+			if (line.startsWith("SUBMITNAME")) { // get user's nickname
+				out.println(getsName());
+			} else if (line.startsWith("NAMEACCEPTED")) { // if server accept the username
+				textField.setEditable(true);
+			} else if (line.startsWith("MESSAGE")) { // if client get message protocol the message is for chatting
+				// if (line.substring(8).equals("game start"))
+				messageArea.append(line.substring(8) + "\n");
+			} else if (line.startsWith("ERROR")) {
+				JOptionPane.showMessageDialog(null, line.substring(6));
+			} else if (line.startsWith("GAMESTART")) {
+				panel_flat.setVisible(false);
+				Client.frame.setVisible(false);
+				Thread t1 = new Thread(new gameGUI());
+				t1.start();
+			} else if (line.startsWith("ENDMESSAGE")) {
+				// if (line.substring(8).equals("game start"))
+				messageArea.append(line.substring(11) + "\n");
+				textField.setVisible(false);
+				socket.close();
+			}
+		}
+	}
+
+	public void run() {
+		try {
+			this.runChat(null, 1);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return;
+	}
 }

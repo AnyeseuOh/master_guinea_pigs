@@ -68,8 +68,8 @@ public class layout extends JFrame {
 	private class press_start implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			frm.setVisible(false);
-			//Thread t2 = new Thread(new Send_socket());
-			//t2.start();
+			Thread t2 = new Thread(new Client());
+			t2.start();
 		}
 	}
 
