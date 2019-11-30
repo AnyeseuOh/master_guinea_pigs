@@ -24,7 +24,6 @@ public class gameGUI implements Runnable {
 	static JFrame frame = new JFrame("기니피그를 잡아라!");
 	static String objInfo;
 
-	int key;
 	private static int[] mtr_one, mtr_two, mtr_three, mtr_four, mtr_five, pig;
 	int pig_x_me = 810;
 	int pig_y_me = 625;//
@@ -56,14 +55,13 @@ public class gameGUI implements Runnable {
 	/*
 	 * method runGUI gets imageicon value of object image
 	 */
-	public void runGUI(int[] _pig, int[] _1, int[] _2, int[] _3, int[] _4, int[] _5, int[] keyyy) {
+	public void runGUI(int[] _pig, int[] _1, int[] _2, int[] _3, int[] _4, int[] _5) {
 		pig = _pig;
 		mtr_one = _1;
 		mtr_two = _2;
 		mtr_three = _3;
 		mtr_four = _4;
 		mtr_five = _5;
-		key = keyyy[0];
 
 		frame.setBounds(0, 0, 1042 + 64 + 320, 816);// frame -> chat
 		frame.getContentPane().add(panel);
@@ -74,15 +72,7 @@ public class gameGUI implements Runnable {
 		ImageIcon three = new ImageIcon("3.png");
 		ImageIcon four = new ImageIcon("4.png");
 		ImageIcon five = new ImageIcon("5.png");
-		ImageIcon keyy = new ImageIcon("key.png");
 		ImageIcon sadpig = new ImageIcon("sadpig.png");
-
-		int xx = key % 10;
-		int yy = key / 10;
-		JLabel compp = new JLabel(keyy);
-		compp.setBounds(xx * 64 + 64, yy * 64 + 64, 64, 64);
-		panel.add(compp);
-		jlp.add(compp, 0);
 
 		/* Get map information from the server and sprinkle it-> Guinea Pig */
 		for (int i = 0; i < pig.length; i++) {
@@ -255,7 +245,7 @@ public class gameGUI implements Runnable {
 			k++;
 		}
 
-		this.runGUI(temp, temp1, temp2, temp3, temp4, temp5, key);
+		this.runGUI(temp, temp1, temp2, temp3, temp4, temp5);
 	}
 
 	private class TheHandler implements ActionListener {

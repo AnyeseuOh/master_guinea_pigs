@@ -108,28 +108,26 @@ public class Client implements Runnable {
 			String line = in.readLine();
 			if (line.startsWith("SUBMITNAME")) { // get user's nickname
 				out.println(getsName());
-				out.flush();
+				//out.flush();
 				
 				//String path = Server.class.getResource("").getPath();
-		        File file = new File("serverinfo.txt");
-		        FileWriter fw = new FileWriter(file, true);
+		        //File file = new File("serverinfo.txt");
+		        //FileWriter fw = new FileWriter(file, true);
 
-		        fw.write(getsName() + " 0 0"+ "\n");
-		        fw.flush();
-
-		        
+		        //fw.write(getsName() + " 0 0"+ "\n");
+		        //fw.flush();		        
 			} else if (line.startsWith("NAMEACCEPTED")) { // if server accept the username
 				textField.setEditable(true);
 				out.println("GAMESTART");//�엫�떆
 			} else if (line.startsWith("MESSAGE")) { // if client get message protocol the message is for chatting
-				// if (line.substring(8).equals("game start"))
 				messageArea.append(line.substring(8) + "\n");
 			} else if (line.startsWith("ERROR")) {
-				//System.out.println("ERROR --"); 이름 중복검사 확인
 				JOptionPane.showMessageDialog(null, line.substring(6));
 			} else if (line.startsWith("GAMESTART")) {
 				panel_flat.setVisible(false);
 				Client.frame.setVisible(false);
+				showInfo.setVisible(false);
+				messageArea.setVisible(false);
 				Thread t1 = new Thread(new gameGUI(line));
 				t1.start();
 			} else if (line.startsWith("ENDMESSAGE")) {
