@@ -28,7 +28,7 @@ public class Client implements Runnable {
 	static JFrame frame = new JFrame("Master geinea pigs");
 	ImageIcon flat = new ImageIcon("flat.png");
 	Image newflat = flat.getImage();
-	Image changedflat = newflat.getScaledInstance(790, 600, Image.SCALE_SMOOTH);
+	Image changedflat = newflat.getScaledInstance(1306, 816, Image.SCALE_SMOOTH);
 	ImageIcon newFlat = new ImageIcon(changedflat);
 
 	JPanel panel_flat = new JPanel() {
@@ -38,7 +38,7 @@ public class Client implements Runnable {
 	public Client() {
 		messageArea.setEditable(false);
 		textField.setEditable(false);
-		gameGUI.frame.setBounds(0, 0, 1400, 800);
+		gameGUI.frame.setBounds(0, 0, 1306, 816);
 		gameGUI.frame.getContentPane().add(panel_flat);
 		gameGUI.frame.getContentPane().add(textField, "South");
 		gameGUI.frame.getContentPane().add(new JScrollPane(messageArea), "East");
@@ -85,6 +85,7 @@ public class Client implements Runnable {
 				out.println(getsName());
 			} else if (line.startsWith("NAMEACCEPTED")) { // if server accept the username
 				textField.setEditable(true);
+				out.println("GAMESTART");//임시
 			} else if (line.startsWith("MESSAGE")) { // if client get message protocol the message is for chatting
 				// if (line.substring(8).equals("game start"))
 				messageArea.append(line.substring(8) + "\n");
@@ -93,7 +94,7 @@ public class Client implements Runnable {
 			} else if (line.startsWith("GAMESTART")) {
 				panel_flat.setVisible(false);
 				Client.frame.setVisible(false);
-				Thread t1 = new Thread(new gameGUI());
+				Thread t1 = new Thread(new gameGUI(line));
 				t1.start();
 			} else if (line.startsWith("ENDMESSAGE")) {
 				// if (line.substring(8).equals("game start"))

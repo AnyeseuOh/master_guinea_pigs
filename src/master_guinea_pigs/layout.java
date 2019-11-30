@@ -25,7 +25,6 @@ public class layout extends JFrame {
 	// JTextField textField = new JTextField(80);
 	// JTextArea messageArea = new JTextArea(16, 80);
 	Container frm;
-	gameGUI gui = new gameGUI();
 	JFrame frame = new JFrame();
 	//BGM _music = new BGM("requiem.wav");
 	

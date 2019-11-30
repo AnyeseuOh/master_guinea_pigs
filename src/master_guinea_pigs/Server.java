@@ -302,7 +302,7 @@ public class Server {
 					if (inputMessage.equals("GAMESTART")) {
 						game_start_flag = 1; // flag on
 
-						res += "GPigs:";
+						res += "";
 						for (int i = 0; i < cnt; i++) {
 							System.out.println(pigArr_x[i] * 10 + pigArr_y[i]);
 							res += pigArr_x[i] * 10 + pigArr_y[i] + " ";
@@ -310,43 +310,53 @@ public class Server {
 						int key_value = key_x * 10 + key_y;
 						System.out.println("\nKEY: " + key_value);
 
-						res += "KEY: " + key_value + " ";
+						res += "#" + key_value + " ";
 
-						System.out.print("\nNUMBER1:");
-						res += "NUMBER1:";
-						for (int i = 0; i < cnt_1; i++) {
-							System.out.print(number1[i] + " ");
-							res += number1[i] + " ";
+						if (cnt_1 != 0) {
+							System.out.print("\nNUMBER1:");
+							res += "#";
+							for (int i = 0; i < cnt_1; i++) {
+								System.out.print(number1[i] + " ");
+								res += number1[i] + " ";
+							}
 						}
 
-						System.out.print("\nNUMBER2:");
-						res += "NUMBER2:";
-						for (int i = 0; i < cnt_2; i++) {
-							System.out.print(number2[i] + " ");
-							res += number2[i] + " ";
+						if (cnt_2 != 0) {
+							System.out.print("\nNUMBER2:");
+							res += "#";
+							for (int i = 0; i < cnt_2; i++) {
+								System.out.print(number2[i] + " ");
+								res += number2[i] + " ";
+							}
 						}
 
-						System.out.print("\nNUMBER3:");
-						res += "NUMBER3:";
-						for (int i = 0; i < cnt_3; i++) {
-							System.out.print(number3[i] + " ");
-							res += number3[i] + " ";
+						if (cnt_3 != 0) {
+							System.out.print("\nNUMBER3:");
+							res += "#";
+							for (int i = 0; i < cnt_3; i++) {
+								System.out.print(number3[i] + " ");
+								res += number3[i] + " ";
+							}
 						}
 
-						System.out.print("\nNUMBER4:");
-						res += "NUMBER4:";
-						for (int i = 0; i < cnt_4; i++) {
-							System.out.print(number4[i] + " ");
-							res += number4[i] + " ";
+						if (cnt_4 != 0) {
+							System.out.print("\nNUMBER4:");
+							res += "#";
+							for (int i = 0; i < cnt_4; i++) {
+								System.out.print(number4[i] + " ");
+								res += number4[i] + " ";
+							}
 						}
 
-						System.out.print("\nNUMBER5:");
-						res += "NUMBER5:";
-						for (int i = 0; i < cnt_5; i++) {
-							System.out.print(number5[i] + " ");
-							res += number5[i] + " ";
+						if (cnt_5 != 0) {
+							System.out.print("\nNUMBER5:");
+							res += "#";
+							for (int i = 0; i < cnt_5; i++) {
+								System.out.print(number5[i] + " ");
+								res += number5[i] + " ";
+							}
 						}
-						out.println(res + "\n");
+						out.println("GAMESTART" + res + "\n");
 					} else if (!inputMessage.equals("")) {
 						sendToallclient("MESSAGE " + name + ": " + inputMessage);
 					}
