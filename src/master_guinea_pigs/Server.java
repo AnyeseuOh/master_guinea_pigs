@@ -94,10 +94,9 @@ public class Server {
 			System.out.print(number5[i] + " ");
 		}
 
-		ServerSocket listener = null;
+		ServerSocket listener = new ServerSocket(9998);
 		ExecutorService pool = Executors.newFixedThreadPool(100);
 		try {
-			listener = new ServerSocket(9998);
 			while (true) {
 				pool.execute(new Server_(listener.accept()));
 			}
