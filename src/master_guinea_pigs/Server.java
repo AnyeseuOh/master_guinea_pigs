@@ -34,9 +34,6 @@ public class Server {
 
 	private static String[] user = new String[max_client]; // store user name -> map with index (hashmap)
 	private static PrintWriter[] ID = new PrintWriter[max_client]; // store user's address -> map with index(hashmap)
-	
-	private static String[] battleUser = new String[max_client]; 
-
 
 	private static final int ROW = 10;
 	private static final int COL = 10;
@@ -373,27 +370,24 @@ public class Server {
 							}
 						}
 
-					} else if (inputMessage.startsWith("#")){
-		                  
-		                  String msg[];
-		                  msg = inputMessage.substring(1).split("#"); //" "앞까지 분리해서 내용을 따로 저장
-		                  
-		                  //namesList = new ArrayList(names);
-		                  //writersList = new ArrayList(writers);
-		                  
-		                  battleUser[0] = msg[0]; //battle receiver
-		                  battleUser[1] = name; //battle sender
-		                  System.out.println(battleUser[0]+ " vs " + battleUser[1]);
-		                  
-		                  //String target = msg[0]; 
-		                    for (int i=0; i<user.length; i++) {  // 클라이언트의 수만큼 반복문을 돌면서 
-		                               if (user[i].equals(msg[0]))   // 같은 이름을 찾으면
-		                                  ID[i].println("BATTLE" + " from - "+ name +" : " + msg[1]);  // 해당 유저에게만 내용전달
-		                           }
-					} else if (!inputMessage.equals("")) {
+					}else if (inputMessage.equals("GAMERESULT")) { // if game end, update the result
+						return;
+					}else if (inputMessage.startsWith("USERLIST")) {// 유저리스트를 요청한 클라이언트에게 현재 접속중인 유저리스트를 넘겨 줍니다.
+						out.println("USERLIST" + names);
+						System.out.println("유저"+ names);
+					}
+					else if(inputMessage.startsWith("WHISPER")) {
+						for (int i=0; i<names.size();i++) {// 모든 유저 목록을 검사
+							String whs = inputMessage.substring(8);
+							whs = whs.split(":")[0];//메시지 부분
+							if(user[i].equals(whs)) {//만약 유저 중 귓속말을 요청한 유저와 닉네임이 같은 유저가 있다면
+								PrintWriter sender = info.get(user[i]);
+				                sender.println("READY");
+				                out.println("READY");
+							}
+						}
+					}else if (!inputMessage.equals("")) {
 						sendToallclient("MESSAGE " + name + ": " + inputMessage);
-					} else if (inputMessage.equals("GAMERESULT")) { // if game end, update the result
-
 					}
 				}
 
