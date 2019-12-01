@@ -25,6 +25,7 @@ public class gameGUI implements Runnable {
 	static int index = 0;
 	static JFrame frame = new JFrame("기니피그를 잡아라!");
 	static String objInfo;
+	static PrintWriter out;
 
 	private static int[] mtr_one, mtr_two, mtr_three, mtr_four, mtr_five, pig;
 	int pig_x_me = 810;
@@ -272,6 +273,7 @@ public class gameGUI implements Runnable {
 			for (int i = 0; i < 100; i++) {
 				if (event.getSource() == button[i]) {
 					System.out.println("object_clicked" + i);
+					out.println("object_clicked" + i);// send to server
 					button[i].setVisible(false); // Get rid of the button
 					int j = i;
 					if (IntStream.of(pig).anyMatch(x -> x == j)) {
@@ -324,7 +326,6 @@ public class gameGUI implements Runnable {
 						panel.add(jail_);
 						jlp.add(jail_, 1);
 					}
-					Client.out.println("object_clicked" + i);// send to server
 				}
 			}
 		}

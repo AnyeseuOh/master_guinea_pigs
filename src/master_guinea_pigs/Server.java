@@ -15,8 +15,8 @@ public class Server {
 
 	private static int max_client = 100;
 
-	private static int[] turn = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	private static int[] turn = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	private static int[] game_start_flag = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; // flag variable
 																									// checks if game is
@@ -216,23 +216,23 @@ public class Server {
 			mineArr[row][col] = " " + getMineNumber(row, col) + " ";
 		}
 
-		if (getMineNumber(row, col) == 1 && !isExistMine(row,col)) {
+		if (getMineNumber(row, col) == 1 && !isExistMine(row, col)) {
 			number1[cnt_1] = row * 10 + col;
 			cnt_1++;
 		}
-		if (getMineNumber(row, col) == 2 && !isExistMine(row,col)) {
+		if (getMineNumber(row, col) == 2 && !isExistMine(row, col)) {
 			number2[cnt_2] = row * 10 + col;
 			cnt_2++;
 		}
-		if (getMineNumber(row, col) == 3 && !isExistMine(row,col)) {
+		if (getMineNumber(row, col) == 3 && !isExistMine(row, col)) {
 			number3[cnt_3] = row * 10 + col;
 			cnt_3++;
 		}
-		if (getMineNumber(row, col) == 4 && !isExistMine(row,col)) {
+		if (getMineNumber(row, col) == 4 && !isExistMine(row, col)) {
 			number4[cnt_4] = row * 10 + col;
 			cnt_4++;
 		}
-		if (getMineNumber(row, col) == 5 && !isExistMine(row,col)) {
+		if (getMineNumber(row, col) == 5 && !isExistMine(row, col)) {
 			number5[cnt_5] = row * 10 + col;
 			cnt_5++;
 		}
@@ -300,6 +300,7 @@ public class Server {
 
 					String inputMessage = in.readLine();
 					String res = "";
+					PrintWriter sender = null;
 
 					if (inputMessage.equals("GAMESTART")) {
 						game_start_flag[client_count] = 1; // flag on
@@ -355,38 +356,33 @@ public class Server {
 							}
 						}
 						out.println("GAMESTART" + res + "\n");
-
-						while (game_start_flag[client_count] == 1) {
-							if(inputMessage.equals("object_clicked")) {
-								turn[client_count]++;
-								if(turn[client_count] % 2 == 0) {
-									out.println("LOCK");
-									out.println("GO");
-								}
-								else{
-									out.println("LOCK");
-									out.println("GO");
-								}
-							}
-						}
-
-					}else if (inputMessage.equals("GAMERESULT")) { // if game end, update the result
+					} else if (inputMessage.equals("GAMERESULT")) { // if game end, update the result
 						return;
-					}else if (inputMessage.startsWith("USERLIST")) {// 유저리스트를 요청한 클라이언트에게 현재 접속중인 유저리스트를 넘겨 줍니다.
+					} else if (inputMessage.startsWith("USERLIST")) {// 유저리스트를 요청한 클라이언트에게 현재 접속중인 유저리스트를 넘겨 줍니다.
 						out.println("USERLIST" + names);
-						System.out.println("유저"+ names);
-					}
-					else if(inputMessage.startsWith("WHISPER")) {
-						for (int i=0; i<names.size();i++) {// 모든 유저 목록을 검사
+						System.out.println("유저" + names);
+					} else if (inputMessage.startsWith("WHISPER")) {
+						for (int i = 0; i < names.size(); i++) {// 모든 유저 목록을 검사
 							String whs = inputMessage.substring(8);
-							whs = whs.split(":")[0];//메시지 부분
-							if(user[i].equals(whs)) {//만약 유저 중 귓속말을 요청한 유저와 닉네임이 같은 유저가 있다면
-								PrintWriter sender = info.get(user[i]);
-				                sender.println("READY");
-				                out.println("READY");
+							whs = whs.split(":")[0];// 메시지 부분
+							if (user[i].equals(whs)) {// 만약 유저 중 귓속말을 요청한 유저와 닉네임이 같은 유저가 있다면
+								sender = info.get(user[i]);
+								sender.println("READY");
+								out.println("READY");
 							}
 						}
-					}else if (!inputMessage.equals("")) {
+					} else if (inputMessage.equals("object_clicked")) {
+						System.out.println(inputMessage);
+						int msg_index = Integer.parseInt(inputMessage.substring(14));
+						turn[client_count] = turn[client_count]+1;
+						if (turn[client_count] % 2 == 0) {
+							sender.println("LOCK"+msg_index);
+							out.println("GO"+msg_index);
+						} else {
+							out.println("LOCK"+msg_index);
+							sender.println("GO"+msg_index);
+						}
+					} else if (!inputMessage.equals("")) {
 						sendToallclient("MESSAGE " + name + ": " + inputMessage);
 					}
 				}
@@ -420,45 +416,45 @@ public class Server {
 
 	public static void fileRead() throws NumberFormatException, IOException {
 
-        String path = Server.class.getResource("").getPath();
-        File file = new File("serverinfo.txt");
-         //占쏙옙占쏙옙占쏙옙트 占쏙옙占쏙옙恝占� serverinfo.txt占쏙옙 占쏙옙占쌌쏙옙킨 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙罐占� 占쏙옙占쏙옙占싼댐옙.
-        
-        StringTokenizer st;
-        FileReader filereader = new FileReader(file);
-        BufferedReader bufReader = new BufferedReader(filereader);
-        UserInfo[] u_info = new UserInfo[100];
-        String user, pw, name, last_time;
-        int win, lose;
+		String path = Server.class.getResource("").getPath();
+		File file = new File("serverinfo.txt");
+		// 占쏙옙占쏙옙占쏙옙트 占쏙옙占쏙옙恝占� serverinfo.txt占쏙옙 占쏙옙占쌌쏙옙킨 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙罐占�
+		// 占쏙옙占쏙옙占싼댐옙.
 
-        
-        String line = "";
-          while((line = bufReader.readLine()) != null){
-              //System.out.println(line);
-              st = new StringTokenizer(line, " ");
-              
-              user = st.nextToken();
-              //pw = st.nextToken();
-              //name = st.nextToken();
-              //last_time = st.nextToken();
-              win = Integer.parseInt(st.nextToken());
-              lose = Integer.parseInt(st.nextToken());
-              
-              u_info[i] = new UserInfo();
-              
-              u_info[i].user = user;
-              //u_info[i].pw = pw;
-              //u_info[i].name = name;
-              //u_info[i].last_time = last_time;
-              u_info[i].win = win;
-              u_info[i].lose = lose;
-              
-              i = i+1;
-              //System.out.println("\nUser: " + u_info[i-1].user +" pw : " + pw + "name : " + name + "last login time : " + last_time + "W / L : " + win + " / " + lose);
-          } // 
-     }
+		StringTokenizer st;
+		FileReader filereader = new FileReader(file);
+		BufferedReader bufReader = new BufferedReader(filereader);
+		UserInfo[] u_info = new UserInfo[100];
+		String user, pw, name, last_time;
+		int win, lose;
 
-	
+		String line = "";
+		while ((line = bufReader.readLine()) != null) {
+			// System.out.println(line);
+			st = new StringTokenizer(line, " ");
+
+			user = st.nextToken();
+			// pw = st.nextToken();
+			// name = st.nextToken();
+			// last_time = st.nextToken();
+			win = Integer.parseInt(st.nextToken());
+			lose = Integer.parseInt(st.nextToken());
+
+			u_info[i] = new UserInfo();
+
+			u_info[i].user = user;
+			// u_info[i].pw = pw;
+			// u_info[i].name = name;
+			// u_info[i].last_time = last_time;
+			u_info[i].win = win;
+			u_info[i].lose = lose;
+
+			i = i + 1;
+			// System.out.println("\nUser: " + u_info[i-1].user +" pw : " + pw + "name : " +
+			// name + "last login time : " + last_time + "W / L : " + win + " / " + lose);
+		} //
+	}
+
 }
 
 class UserInfo {

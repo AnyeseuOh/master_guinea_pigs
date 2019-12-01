@@ -164,6 +164,7 @@ public class Client implements Runnable {
 				Thread t2 = new Thread(new personalChat());
 				t2.start();
 				Thread t1 = new Thread(new gameGUI(line));
+				gameGUI.out = Client.out;
 				t1.start();
 			} else if (line.startsWith("ENDMESSAGE")) {
 				// if (line.substring(8).equals("game start"))
@@ -171,10 +172,16 @@ public class Client implements Runnable {
 				textField.setVisible(false);
 				socket.close();
 			} else if (line.startsWith("LOCK")) {
+				int msg_index = Integer.parseInt(line.substring(4));
+				System.out.println("lock"+msg_index);
+				gameGUI.button[msg_index].setVisible(false); // Get rid of the button
 				for (int i = 0; i < gameGUI.index; i++) {
 					gameGUI.button[i].setEnabled(false);
 				}
 			} else if (line.startsWith("GO")) {
+				int msg_index = Integer.parseInt(line.substring(2));
+				System.out.println("go"+msg_index);
+				gameGUI.button[msg_index].setVisible(false); // Get rid of the button
 				for (int i = 0; i < gameGUI.index; i++) {
 					gameGUI.button[i].setEnabled(false);
 				}
