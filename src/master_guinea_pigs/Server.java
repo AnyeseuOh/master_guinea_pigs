@@ -216,23 +216,23 @@ public class Server {
 			mineArr[row][col] = " " + getMineNumber(row, col) + " ";
 		}
 
-		if (getMineNumber(row, col) == 1) {
+		if (getMineNumber(row, col) == 1 && !isExistMine(row,col)) {
 			number1[cnt_1] = row * 10 + col;
 			cnt_1++;
 		}
-		if (getMineNumber(row, col) == 2) {
+		if (getMineNumber(row, col) == 2 && !isExistMine(row,col)) {
 			number2[cnt_2] = row * 10 + col;
 			cnt_2++;
 		}
-		if (getMineNumber(row, col) == 3) {
+		if (getMineNumber(row, col) == 3 && !isExistMine(row,col)) {
 			number3[cnt_3] = row * 10 + col;
 			cnt_3++;
 		}
-		if (getMineNumber(row, col) == 4) {
+		if (getMineNumber(row, col) == 4 && !isExistMine(row,col)) {
 			number4[cnt_4] = row * 10 + col;
 			cnt_4++;
 		}
-		if (getMineNumber(row, col) == 5) {
+		if (getMineNumber(row, col) == 5 && !isExistMine(row,col)) {
 			number5[cnt_5] = row * 10 + col;
 			cnt_5++;
 		}
@@ -400,44 +400,45 @@ public class Server {
 
 	public static void fileRead() throws NumberFormatException, IOException {
 
-		String path = Server.class.getResource("").getPath();
-		File file = new File("serverinfo.txt");
-		// ������Ʈ ����ο� serverinfo.txt�� ���ս�Ų ���� ������ ��θ� �����Ѵ�.
+        String path = Server.class.getResource("").getPath();
+        File file = new File("serverinfo.txt");
+         //占쏙옙占쏙옙占쏙옙트 占쏙옙占쏙옙恝占� serverinfo.txt占쏙옙 占쏙옙占쌌쏙옙킨 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙罐占� 占쏙옙占쏙옙占싼댐옙.
+        
+        StringTokenizer st;
+        FileReader filereader = new FileReader(file);
+        BufferedReader bufReader = new BufferedReader(filereader);
+        UserInfo[] u_info = new UserInfo[100];
+        String user, pw, name, last_time;
+        int win, lose;
 
-		StringTokenizer st;
-		FileReader filereader = new FileReader(file);
-		BufferedReader bufReader = new BufferedReader(filereader);
-		UserInfo[] u_info = new UserInfo[100];
-		String user, pw, name, last_time;
-		int win, lose;
+        
+        String line = "";
+          while((line = bufReader.readLine()) != null){
+              //System.out.println(line);
+              st = new StringTokenizer(line, " ");
+              
+              user = st.nextToken();
+              //pw = st.nextToken();
+              //name = st.nextToken();
+              //last_time = st.nextToken();
+              win = Integer.parseInt(st.nextToken());
+              lose = Integer.parseInt(st.nextToken());
+              
+              u_info[i] = new UserInfo();
+              
+              u_info[i].user = user;
+              //u_info[i].pw = pw;
+              //u_info[i].name = name;
+              //u_info[i].last_time = last_time;
+              u_info[i].win = win;
+              u_info[i].lose = lose;
+              
+              i = i+1;
+              //System.out.println("\nUser: " + u_info[i-1].user +" pw : " + pw + "name : " + name + "last login time : " + last_time + "W / L : " + win + " / " + lose);
+          } // 
+     }
 
-		String line = "";
-		while ((line = bufReader.readLine()) != null) {
-			// System.out.println(line);
-			st = new StringTokenizer(line, " ");
-
-			user = st.nextToken();
-			// pw = st.nextToken();
-			// name = st.nextToken();
-			// last_time = st.nextToken();
-			win = Integer.parseInt(st.nextToken());
-			lose = Integer.parseInt(st.nextToken());
-
-			u_info[i] = new UserInfo();
-
-			u_info[i].user = user;
-			// u_info[i].pw = pw;
-			// u_info[i].name = name;
-			// u_info[i].last_time = last_time;
-			u_info[i].win = win;
-			u_info[i].lose = lose;
-
-			i = i + 1;
-			// System.out.println("\nUser: " + u_info[i-1].user +" pw : " + pw + "name : " +
-			// name + "last login time : " + last_time + "W / L : " + win + " / " + lose);
-		} //
-	}
-
+	
 }
 
 class UserInfo {
