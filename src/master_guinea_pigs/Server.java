@@ -302,7 +302,6 @@ public class Server {
 					String res = "";
 
 					if (inputMessage.equals("GAMESTART")) {
-						client_count++;
 						game_start_flag[client_count] = 1; // flag on
 
 						res += "";
@@ -360,7 +359,14 @@ public class Server {
 						while (game_start_flag[client_count] == 1) {
 							if(inputMessage.equals("object_clicked")) {
 								turn[client_count]++;
-								out.println("LOCK");
+								if(turn[client_count] % 2 == 0) {
+									out.println("LOCK");
+									out.println("GO");
+								}
+								else{
+									out.println("LOCK");
+									out.println("GO");
+								}
 							}
 						}
 
