@@ -211,23 +211,23 @@ public class Server {
 			mineArr[row][col] = " " + getMineNumber(row, col) + " ";
 		}
 
-		if (getMineNumber(row, col) == 1) {
+		if (getMineNumber(row, col) == 1 && !isExistMine(row,col)) {
 			number1[cnt_1] = row * 10 + col;
 			cnt_1++;
 		}
-		if (getMineNumber(row, col) == 2) {
+		if (getMineNumber(row, col) == 2 && !isExistMine(row,col)) {
 			number2[cnt_2] = row * 10 + col;
 			cnt_2++;
 		}
-		if (getMineNumber(row, col) == 3) {
+		if (getMineNumber(row, col) == 3 && !isExistMine(row,col)) {
 			number3[cnt_3] = row * 10 + col;
 			cnt_3++;
 		}
-		if (getMineNumber(row, col) == 4) {
+		if (getMineNumber(row, col) == 4 && !isExistMine(row,col)) {
 			number4[cnt_4] = row * 10 + col;
 			cnt_4++;
 		}
-		if (getMineNumber(row, col) == 5) {
+		if (getMineNumber(row, col) == 5 && !isExistMine(row,col)) {
 			number5[cnt_5] = row * 10 + col;
 			cnt_5++;
 		}
@@ -393,7 +393,7 @@ public class Server {
 
         String path = Server.class.getResource("").getPath();
         File file = new File("serverinfo.txt");
-         //������Ʈ ����ο� serverinfo.txt�� ���ս�Ų ���� ������ ��θ� �����Ѵ�.
+         //占쏙옙占쏙옙占쏙옙트 占쏙옙占쏙옙恝占� serverinfo.txt占쏙옙 占쏙옙占쌌쏙옙킨 占쏙옙占쏙옙 占쏙옙占쏙옙占쏙옙 占쏙옙罐占� 占쏙옙占쏙옙占싼댐옙.
         
         StringTokenizer st;
         FileReader filereader = new FileReader(file);
