@@ -15,7 +15,12 @@ public class Server {
 
 	private static int max_client = 100;
 
-	private static int game_start_flag = 0; // flag variable checks if game is started
+	private static int[] turn = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	private static int[] game_start_flag = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; // flag variable
+																									// checks if game is
+																									// started
 	private static HashSet<String> names = new HashSet<String>(); // hashset that stores user's name -> prevent same
 																	// username
 	private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>(); // hashset that stores client's ip address
@@ -53,13 +58,13 @@ public class Server {
 	static int key_y;
 	static int cnt = 0;
 	static int cnt_1 = 0, cnt_2 = 0, cnt_3 = 0, cnt_4 = 0, cnt_5 = 0;
-	static int i = 0; //Store the user info cnt = i
+	static int i = 0; // Store the user info cnt = i
 
 	public static void main(String[] args) throws IOException {
 		Server server = new Server();
-		
+
 		fileRead();
-		
+
 		server.setInit();
 		server.setMine(pig_CNT);
 		server.printMine();
@@ -263,22 +268,20 @@ public class Server {
 
 				while (true) {
 					/* Check if the game has started or if it is currently waiting */
-					if (game_start_flag == 0) {
-						out.println("SUBMITNAME");
-						name = in.readLine();
-						if (name == null) {
-							return;
-						}
-						synchronized (names) {
-							sendToallclient("CONNECT " + name + " is connected.\n");
-							if (!names.contains(name)) {
-								names.add(name);
-								System.out.println(names);
-								sendToallclient("MESSAGE " + "New user '" + name + "' has entered.");
-								break;
-							} else {
-								out.println("ERROR " + "This nickname is already using.");
-							}
+					out.println("SUBMITNAME");
+					name = in.readLine();
+					if (name == null) {
+						return;
+					}
+					synchronized (names) {
+						sendToallclient("CONNECT " + name + " is connected.\n");
+						if (!names.contains(name)) {
+							names.add(name);
+							System.out.println(names);
+							sendToallclient("MESSAGE " + "New user '" + name + "' has entered.");
+							break;
+						} else {
+							out.println("ERROR " + "This nickname is already using.");
 						}
 					}
 				}
@@ -299,7 +302,8 @@ public class Server {
 					String res = "";
 
 					if (inputMessage.equals("GAMESTART")) {
-						game_start_flag = 1; // flag on
+						client_count++;
+						game_start_flag[client_count] = 1; // flag on
 
 						res += "";
 						for (int i = 0; i < cnt; i++) {
@@ -352,12 +356,18 @@ public class Server {
 							}
 						}
 						out.println("GAMESTART" + res + "\n");
+
+						while (game_start_flag[client_count] == 1) {
+							if(inputMessage.equals("object_clicked")) {
+								turn[client_count]++;
+								out.println("LOCK");
+							}
+						}
+
 					} else if (!inputMessage.equals("")) {
 						sendToallclient("MESSAGE " + name + ": " + inputMessage);
 					} else if (inputMessage.equals("GAMERESULT")) { // if game end, update the result
-						
-					} else if (inputMessage.equals("object_clicked")) {
-						
+
 					}
 				}
 
@@ -388,92 +398,85 @@ public class Server {
 		}
 	}
 
-	
 	public static void fileRead() throws NumberFormatException, IOException {
 
-        String path = Server.class.getResource("").getPath();
-        File file = new File("serverinfo.txt");
-         //������Ʈ ����ο� serverinfo.txt�� ���ս�Ų ���� ������ ��θ� �����Ѵ�.
-        
-        StringTokenizer st;
-        FileReader filereader = new FileReader(file);
-        BufferedReader bufReader = new BufferedReader(filereader);
-        UserInfo[] u_info = new UserInfo[100];
-        String user, pw, name, last_time;
-        int win, lose;
+		String path = Server.class.getResource("").getPath();
+		File file = new File("serverinfo.txt");
+		// ������Ʈ ����ο� serverinfo.txt�� ���ս�Ų ���� ������ ��θ� �����Ѵ�.
 
-        
-        String line = "";
-          while((line = bufReader.readLine()) != null){
-              //System.out.println(line);
-              st = new StringTokenizer(line, " ");
-              
-              user = st.nextToken();
-              //pw = st.nextToken();
-              //name = st.nextToken();
-              //last_time = st.nextToken();
-              win = Integer.parseInt(st.nextToken());
-              lose = Integer.parseInt(st.nextToken());
-              
-              u_info[i] = new UserInfo();
-              
-              u_info[i].user = user;
-              //u_info[i].pw = pw;
-              //u_info[i].name = name;
-              //u_info[i].last_time = last_time;
-              u_info[i].win = win;
-              u_info[i].lose = lose;
-              
-              i = i+1;
-              //System.out.println("\nUser: " + u_info[i-1].user +" pw : " + pw + "name : " + name + "last login time : " + last_time + "W / L : " + win + " / " + lose);
-          } // 
-     }
+		StringTokenizer st;
+		FileReader filereader = new FileReader(file);
+		BufferedReader bufReader = new BufferedReader(filereader);
+		UserInfo[] u_info = new UserInfo[100];
+		String user, pw, name, last_time;
+		int win, lose;
 
-	
+		String line = "";
+		while ((line = bufReader.readLine()) != null) {
+			// System.out.println(line);
+			st = new StringTokenizer(line, " ");
+
+			user = st.nextToken();
+			// pw = st.nextToken();
+			// name = st.nextToken();
+			// last_time = st.nextToken();
+			win = Integer.parseInt(st.nextToken());
+			lose = Integer.parseInt(st.nextToken());
+
+			u_info[i] = new UserInfo();
+
+			u_info[i].user = user;
+			// u_info[i].pw = pw;
+			// u_info[i].name = name;
+			// u_info[i].last_time = last_time;
+			u_info[i].win = win;
+			u_info[i].lose = lose;
+
+			i = i + 1;
+			// System.out.println("\nUser: " + u_info[i-1].user +" pw : " + pw + "name : " +
+			// name + "last login time : " + last_time + "W / L : " + win + " / " + lose);
+		} //
+	}
+
 }
+
 class UserInfo {
-    String user;
-    //String pw;
-    //String name;
-    //String last_time;
-    int win;
-    int lose;
-    
-    
-    public String getUser() {
-       return user;
-    }
-    public String setUser(String User) {
-       return this.user = User;
-    }
-    
-    /*
-    public String getPw() {
-       return pw;
-    }
-    public String setPw(String Pw) {
-       return this.pw = Pw;
-    }
-    
-    
-    public String getLastTime() {
-       return this.last_time;
-    }
-    public String setLastTime(String last_time) {
-       return this.last_time = last_time;
-    }
-    */
-    public int getWin() {
-       return this.win;
-    }
-    public int setWin(int win) {
-       return this.win = win;
-    }
-    
-    public int getLose() {
-       return this.lose;
-    }
-    public int setLose(int lose) {
-       return this.lose = lose;
-    }
- }
+	String user;
+	// String pw;
+	// String name;
+	// String last_time;
+	int win;
+	int lose;
+
+	public String getUser() {
+		return user;
+	}
+
+	public String setUser(String User) {
+		return this.user = User;
+	}
+
+	/*
+	 * public String getPw() { return pw; } public String setPw(String Pw) { return
+	 * this.pw = Pw; }
+	 * 
+	 * 
+	 * public String getLastTime() { return this.last_time; } public String
+	 * setLastTime(String last_time) { return this.last_time = last_time; }
+	 */
+	public int getWin() {
+		return this.win;
+	}
+
+	public int setWin(int win) {
+		return this.win = win;
+	}
+
+	public int getLose() {
+		return this.lose;
+	}
+
+	public int setLose(int lose) {
+		return this.lose = lose;
+	}
+}
