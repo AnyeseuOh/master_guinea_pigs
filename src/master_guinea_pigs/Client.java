@@ -117,7 +117,7 @@ public class Client implements Runnable {
 		        //fw.flush();		        
 			} else if (line.startsWith("NAMEACCEPTED")) { // if server accept the username
 				textField.setEditable(true);
-				//out.println("GAMESTART");//�엫�떆
+				out.println("GAMESTART");//�엫�떆
 			} else if (line.startsWith("MESSAGE")) { // if client get message protocol the message is for chatting
 				messageArea.append(line.substring(8) + "\n");
 			} else if (line.startsWith("ERROR")) {
@@ -126,6 +126,8 @@ public class Client implements Runnable {
 				panel_flat.setVisible(false);
 				Client.frame.setVisible(false);
 				showInfo.setVisible(false);
+				Thread t2 = new Thread(new personalChat());
+				t2.start();
 				Thread t1 = new Thread(new gameGUI(line));
 				t1.start();
 			} else if (line.startsWith("ENDMESSAGE")) {

@@ -34,8 +34,6 @@ public class Server {
 	private static final int COL = 10;
 	private static final int pig_CNT = 5;
 	// the number of g_pig
-	private static final int key = 1;
-	// the number of keys
 
 	private static final String MINE = " * ";
 	private static final String KEY = " K ";
@@ -64,14 +62,11 @@ public class Server {
 		
 		server.setInit();
 		server.setMine(pig_CNT);
-		server.setKey(key);
 		server.printMine();
 
 		for (int i = 0; i < cnt; i++) {
 			System.out.println(pigArr_x[i] * 10 + pigArr_y[i]);
 		}
-		int key_value = key_x * 10 + key_y;
-		System.out.println("\nKEY's position : " + key_value);
 
 		System.out.print("\nNUMBER 1 :");
 		for (int i = 0; i < cnt_1; i++) {
@@ -190,21 +185,21 @@ public class Server {
 	// Count mine after finding mines in 8 spaces except for yourself.
 	private static int getMineNumber(int row, int col) {
 		int mineCnt = 0;
-		if (isExistMine(row - 1, col - 1) || isExistKey(row - 1, col - 1))
+		if (isExistMine(row - 1, col - 1))
 			mineCnt++;
-		if (isExistMine(row - 1, col) || isExistKey(row - 1, col))
+		if (isExistMine(row - 1, col))
 			mineCnt++;
-		if (isExistMine(row - 1, col + 1) || isExistKey(row - 1, col + 1))
+		if (isExistMine(row - 1, col + 1))
 			mineCnt++;
-		if (isExistMine(row, col - 1) || isExistKey(row, col - 1))
+		if (isExistMine(row, col - 1))
 			mineCnt++;
-		if (isExistMine(row, col + 1) || isExistKey(row, col + 1))
+		if (isExistMine(row, col + 1))
 			mineCnt++;
-		if (isExistMine(row + 1, col - 1) || isExistKey(row + 1, col - 1))
+		if (isExistMine(row + 1, col - 1))
 			mineCnt++;
-		if (isExistMine(row + 1, col) || isExistKey(row + 1, col))
+		if (isExistMine(row + 1, col))
 			mineCnt++;
-		if (isExistMine(row + 1, col + 1) || isExistKey(row + 1, col + 1))
+		if (isExistMine(row + 1, col + 1))
 			mineCnt++;
 
 		return mineCnt;
@@ -311,10 +306,6 @@ public class Server {
 							System.out.println(pigArr_x[i] * 10 + pigArr_y[i]);
 							res += pigArr_x[i] * 10 + pigArr_y[i] + " ";
 						}
-						int key_value = key_x * 10 + key_y;
-						System.out.println("\nKEY: " + key_value);
-
-						res += "#" + key_value + " ";
 
 						if (cnt_1 != 0) {
 							System.out.print("\nNUMBER1:");
@@ -365,9 +356,9 @@ public class Server {
 						sendToallclient("MESSAGE " + name + ": " + inputMessage);
 					} else if (inputMessage.equals("GAMERESULT")) { // if game end, update the result
 						
+					} else if (inputMessage.equals("object_clicked")) {
+						
 					}
-					
-					
 				}
 
 			} catch (IOException e) {
@@ -402,7 +393,7 @@ public class Server {
 
         String path = Server.class.getResource("").getPath();
         File file = new File("serverinfo.txt");
-         //ÇÁ·ÎÁ§Æ® »ó´ë°æ·Î¿¡ serverinfo.txtÀ» °áÇÕ½ÃÅ² ÃÖÁ¾ ÆÄÀÏÀÇ °æ·Î¸¦ ÀúÀåÇÑ´Ù.
+         //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½Î¿ï¿½ serverinfo.txtï¿½ï¿½ ï¿½ï¿½ï¿½Õ½ï¿½Å² ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
         
         StringTokenizer st;
         FileReader filereader = new FileReader(file);

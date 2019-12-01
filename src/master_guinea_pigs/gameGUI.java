@@ -1,6 +1,8 @@
 package master_guinea_pigs;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.ActionEvent;
@@ -62,16 +64,15 @@ public class gameGUI implements Runnable {
 		mtr_three = _3;
 		mtr_four = _4;
 		mtr_five = _5;
-		
+
 		System.out.println(pig);
 		System.out.println(mtr_one);
 		System.out.println(mtr_two);
-		
 
-		frame.setBounds(0, 0, 1042 + 64 + 320, 816);// frame -> chat
+		frame.setBounds(0, 0, 1042 + 64, 816);// frame -> chat
 		frame.getContentPane().add(panel);
 		ImageIcon grass = new ImageIcon("tileGrass2.png");
-
+		
 		ImageIcon one = new ImageIcon("1.png");
 		ImageIcon two = new ImageIcon("2.png");
 		ImageIcon three = new ImageIcon("3.png");
@@ -127,7 +128,7 @@ public class gameGUI implements Runnable {
 			}
 		}
 
-		if (mtr_four != null ) {
+		if (mtr_four != null) {
 			/* Get map information from the server and sprinkle it-> Guinea Pig */
 			for (int i = 0; i < mtr_four.length; i++) {
 				int x_ = mtr_four[i] % 10;
@@ -190,72 +191,73 @@ public class gameGUI implements Runnable {
 
 		System.out.println(objInfo);
 		objInfo = objInfo.substring(9);
+		System.out.println("오비지:" + objInfo);
 
 		int k = 0;
 		StringTokenizer stt = new StringTokenizer(objInfo, "#");
 
+		ob = new String[stt.countTokens()];
+		int j = 0;
+
 		while (stt.hasMoreTokens()) {
-			int j = 0;
-			ob = new String[stt.countTokens()];
 			ob[j] = stt.nextToken();
 			j++;
 		}
 
 		for (String n : ob) {
+			System.out.println("n:" + n);
 			if (!n.isEmpty() && k == 0) {
 				StringTokenizer st = new StringTokenizer(n, " ");
+				temp = new int[st.countTokens()];
+				j = 0;
 				while (st.hasMoreTokens()) {
-					int j = 0;
-					temp = new int[st.countTokens()];
 					temp[j] = Integer.parseInt(st.nextToken());
+					System.out.println(temp[j]);
 					j++;
 				}
 			} else if (!n.isEmpty() && k == 1) {
 				StringTokenizer st = new StringTokenizer(n, " ");
+				temp1 = new int[st.countTokens()];
+				j = 0;
 				while (st.hasMoreTokens()) {
-					int j = 0;
-					key = new int[st.countTokens()];
-					key[j] = Integer.parseInt(st.nextToken());
+					temp1[j] = Integer.parseInt(st.nextToken());
+					System.out.println(temp1[j]);
 					j++;
 				}
 			} else if (!n.isEmpty() && k == 2) {
 				StringTokenizer st = new StringTokenizer(n, " ");
+				temp2 = new int[st.countTokens()];
+				j = 0;
 				while (st.hasMoreTokens()) {
-					int j = 0;
-					temp1 = new int[st.countTokens()];
-					temp1[j] = Integer.parseInt(st.nextToken());
+					temp2[j] = Integer.parseInt(st.nextToken());
+					System.out.println(temp2[j]);
 					j++;
 				}
 			} else if (!n.isEmpty() && k == 3) {
 				StringTokenizer st = new StringTokenizer(n, " ");
+				temp3 = new int[st.countTokens()];
+				j = 0;
 				while (st.hasMoreTokens()) {
-					int j = 0;
-					temp2 = new int[st.countTokens()];
-					temp2[j] = Integer.parseInt(st.nextToken());
+					temp3[j] = Integer.parseInt(st.nextToken());
+					System.out.println(temp3[j]);
 					j++;
 				}
 			} else if (!n.isEmpty() && k == 4) {
 				StringTokenizer st = new StringTokenizer(n, " ");
+				temp4 = new int[st.countTokens()];
+				j = 0;
 				while (st.hasMoreTokens()) {
-					int j = 0;
-					temp3 = new int[st.countTokens()];
-					temp3[j] = Integer.parseInt(st.nextToken());
+					temp4[j] = Integer.parseInt(st.nextToken());
+					System.out.println(temp4[j]);
 					j++;
 				}
 			} else if (!n.isEmpty() && k == 5) {
 				StringTokenizer st = new StringTokenizer(n, " ");
+				temp5 = new int[st.countTokens()];
+				j = 0;
 				while (st.hasMoreTokens()) {
-					int j = 0;
-					temp4 = new int[st.countTokens()];
-					temp4[j] = Integer.parseInt(st.nextToken());
-					j++;
-				}
-			} else if (!n.isEmpty() && k == 6) {
-				StringTokenizer st = new StringTokenizer(n, " ");
-				while (st.hasMoreTokens()) {
-					int j = 0;
-					temp5 = new int[st.countTokens()];
 					temp5[j] = Integer.parseInt(st.nextToken());
+					System.out.println(temp5[j]);
 					j++;
 				}
 			}
@@ -322,7 +324,7 @@ public class gameGUI implements Runnable {
 						panel.add(jail_);
 						jlp.add(jail_, 1);
 					}
-					// Send_socket.out.println("object_clicked" + i);// send to server
+					Client.out.println("object_clicked" + i);// send to server
 				}
 			}
 		}
