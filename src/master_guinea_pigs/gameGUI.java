@@ -32,7 +32,7 @@ public class gameGUI implements Runnable {
 	Image newImage = room.getImage();
 	Image changedImage = newImage.getScaledInstance(1024 + 64, 768, Image.SCALE_SMOOTH);
 	ImageIcon newRoom = new ImageIcon(changedImage);
-	JLayeredPane jlp = frame.getLayeredPane();
+	JLayeredPane jlp = gameGUI.frame.getLayeredPane();
 
 	/* Prison installation */
 	ImageIcon jail = new ImageIcon("jail.png");
@@ -62,6 +62,11 @@ public class gameGUI implements Runnable {
 		mtr_three = _3;
 		mtr_four = _4;
 		mtr_five = _5;
+		
+		System.out.println(pig);
+		System.out.println(mtr_one);
+		System.out.println(mtr_two);
+		
 
 		frame.setBounds(0, 0, 1042 + 64 + 320, 816);// frame -> chat
 		frame.getContentPane().add(panel);
@@ -74,64 +79,76 @@ public class gameGUI implements Runnable {
 		ImageIcon five = new ImageIcon("5.png");
 		ImageIcon sadpig = new ImageIcon("sadpig.png");
 
-		/* Get map information from the server and sprinkle it-> Guinea Pig */
-		for (int i = 0; i < pig.length; i++) {
-			int x_ = pig[i] % 10;
-			int y_ = pig[i] / 10;
-			JLabel comp = new JLabel(sadpig);
-			comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
-			panel.add(comp);
-			jlp.add(comp, 1);
+		if (pig.length != 0) {
+			/* Get map information from the server and sprinkle it-> Guinea Pig */
+			for (int i = 0; i < pig.length; i++) {
+				int x_ = pig[i] % 10;
+				int y_ = pig[i] / 10;
+				JLabel comp = new JLabel(sadpig);
+				comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
+				panel.add(comp);
+				jlp.add(comp, 1);
+			}
 		}
 
-		/* Get map information from the server and sprinkle it-> Guinea Pig */
-		for (int i = 0; i < mtr_one.length; i++) {
-			int x_ = mtr_one[i] % 10;
-			int y_ = mtr_one[i] / 10;
-			JLabel comp = new JLabel(one);
-			comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
-			panel.add(comp);
-			jlp.add(comp, 1);
+		if (mtr_one != null) {
+			/* Get map information from the server and sprinkle it-> Guinea Pig */
+			for (int i = 0; i < mtr_one.length; i++) {
+				int x_ = mtr_one[i] % 10;
+				int y_ = mtr_one[i] / 10;
+				JLabel comp = new JLabel(one);
+				comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
+				panel.add(comp);
+				jlp.add(comp, 1);
+			}
 		}
 
-		/* Get map information from the server and sprinkle it-> Guinea Pig */
-		for (int i = 0; i < mtr_two.length; i++) {
-			int x_ = mtr_two[i] % 10;
-			int y_ = mtr_two[i] / 10;
-			JLabel comp = new JLabel(two);
-			comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
-			panel.add(comp);
-			jlp.add(comp, 1);
+		if (mtr_two != null) {
+			/* Get map information from the server and sprinkle it-> Guinea Pig */
+			for (int i = 0; i < mtr_two.length; i++) {
+				int x_ = mtr_two[i] % 10;
+				int y_ = mtr_two[i] / 10;
+				JLabel comp = new JLabel(two);
+				comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
+				panel.add(comp);
+				jlp.add(comp, 1);
+			}
 		}
 
-		/* Get map information from the server and sprinkle it-> Guinea Pig */
-		for (int i = 0; i < mtr_three.length; i++) {
-			int x_ = mtr_three[i] % 10;
-			int y_ = mtr_three[i] / 10;
-			JLabel comp = new JLabel(three);
-			comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
-			panel.add(comp);
-			jlp.add(comp, 1);
+		if (mtr_three != null) {
+			/* Get map information from the server and sprinkle it-> Guinea Pig */
+			for (int i = 0; i < mtr_three.length; i++) {
+				int x_ = mtr_three[i] % 10;
+				int y_ = mtr_three[i] / 10;
+				JLabel comp = new JLabel(three);
+				comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
+				panel.add(comp);
+				jlp.add(comp, 1);
+			}
 		}
 
-		/* Get map information from the server and sprinkle it-> Guinea Pig */
-		for (int i = 0; i < mtr_four.length; i++) {
-			int x_ = mtr_four[i] % 10;
-			int y_ = mtr_four[i] / 10;
-			JLabel comp = new JLabel(four);
-			comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
-			panel.add(comp);
-			jlp.add(comp, 1);
+		if (mtr_four != null ) {
+			/* Get map information from the server and sprinkle it-> Guinea Pig */
+			for (int i = 0; i < mtr_four.length; i++) {
+				int x_ = mtr_four[i] % 10;
+				int y_ = mtr_four[i] / 10;
+				JLabel comp = new JLabel(four);
+				comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
+				panel.add(comp);
+				jlp.add(comp, 1);
+			}
 		}
 
-		/* Get map information from the server and sprinkle it-> Guinea Pig */
-		for (int i = 0; i < mtr_five.length; i++) {
-			int x_ = mtr_five[i] % 10;
-			int y_ = mtr_five[i] / 10;
-			JLabel comp = new JLabel(five);
-			comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
-			panel.add(comp);
-			jlp.add(comp, 1);
+		if (mtr_five != null) {
+			/* Get map information from the server and sprinkle it-> Guinea Pig */
+			for (int i = 0; i < mtr_five.length; i++) {
+				int x_ = mtr_five[i] % 10;
+				int y_ = mtr_five[i] / 10;
+				JLabel comp = new JLabel(five);
+				comp.setBounds(x_ * 64 + 64, y_ * 64 + 64, 64, 64);
+				panel.add(comp);
+				jlp.add(comp, 1);
+			}
 		}
 
 		for (int i = 0; i < 10; i++) {
@@ -176,14 +193,14 @@ public class gameGUI implements Runnable {
 
 		int k = 0;
 		StringTokenizer stt = new StringTokenizer(objInfo, "#");
-		
+
 		while (stt.hasMoreTokens()) {
 			int j = 0;
 			ob = new String[stt.countTokens()];
 			ob[j] = stt.nextToken();
 			j++;
 		}
-		
+
 		for (String n : ob) {
 			if (!n.isEmpty() && k == 0) {
 				StringTokenizer st = new StringTokenizer(n, " ");

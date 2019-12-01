@@ -45,29 +45,29 @@ public class Client implements Runnable {
 
 	public Client() {
 		
-		gameGUI.frame.setTitle("[Master geinea pigs] - Wating Room");
-		gameGUI.frame.getContentPane().setLayout(null);
+		Client.frame.setTitle("[Master geinea pigs] - Wating Room");
+		Client.frame.getContentPane().setLayout(null);
 		
 		messageArea.setEditable(false);
 		textField.setEditable(false);
 		showInfo.setEditable(false);
 		
-		gameGUI.frame.setBounds(0, 0, 1090, 816);
-		gameGUI.frame.getContentPane().add(panel_flat);
+		Client.frame.setBounds(0, 0, 1090, 816);
+		Client.frame.getContentPane().add(panel_flat);
 		
 		textField.setBounds(14, 710, 600, 29);
-		gameGUI.frame.getContentPane().add(textField, "South");
+		Client.frame.getContentPane().add(textField, "South");
 		//textField.setColumns(10);
 		
 		messageArea.setBounds(14, 15, 600, 683);
-		gameGUI.frame.getContentPane().add(messageArea);
+		Client.frame.getContentPane().add(messageArea);
 		//gameGUI.frame.getContentPane().add(new JScrollPane(messageArea), "East");
 		
 		showInfo.setText("[ User state ]");
 		showInfo.setBounds(630, 15, 430, 719); // 가로시작점, 세로시작점, 가로길이, 세로길이
-		gameGUI.frame.getContentPane().add(showInfo);
+		Client.frame.getContentPane().add(showInfo);
 		
-		gameGUI.frame.setVisible(true);
+		Client.frame.setVisible(true);
 		textField.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -97,7 +97,6 @@ public class Client implements Runnable {
 		// Make connection and initialize streams
 
 		String serverAddress = new String(getServerAddress());
-		JFrame actionFrame = new JFrame();
 		Socket socket = new Socket(serverAddress, 9998);
 		boolean is_kicked = false;
 
@@ -118,7 +117,7 @@ public class Client implements Runnable {
 		        //fw.flush();		        
 			} else if (line.startsWith("NAMEACCEPTED")) { // if server accept the username
 				textField.setEditable(true);
-				out.println("GAMESTART");//�엫�떆
+				//out.println("GAMESTART");//�엫�떆
 			} else if (line.startsWith("MESSAGE")) { // if client get message protocol the message is for chatting
 				messageArea.append(line.substring(8) + "\n");
 			} else if (line.startsWith("ERROR")) {
@@ -127,7 +126,6 @@ public class Client implements Runnable {
 				panel_flat.setVisible(false);
 				Client.frame.setVisible(false);
 				showInfo.setVisible(false);
-				messageArea.setVisible(false);
 				Thread t1 = new Thread(new gameGUI(line));
 				t1.start();
 			} else if (line.startsWith("ENDMESSAGE")) {
