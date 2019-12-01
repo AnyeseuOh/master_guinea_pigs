@@ -132,9 +132,10 @@ public class Client implements Runnable {
 				Thread t1 = new Thread(new gameGUI(line));
 				t1.start();
 			} else if (line.startsWith("BATTLE")) {  //서버에서 "BATTLE"라고 시작하는 문자가 온다면 귓속말이므로 유니캐스트
-	               //messageArea.append(line.substring(0) + "\n");
-	               Thread t3 = new Thread(new personalChat());
-	               t3.start();
+	              
+				messageArea.append(line.substring(0) + "\n");
+	               /*Thread t3 = new Thread(new personalChat());
+	               t3.start(); 하핫*/ 
 					
 			} else if (line.startsWith("ENDMESSAGE")) {
 				// if (line.substring(8).equals("game start"))

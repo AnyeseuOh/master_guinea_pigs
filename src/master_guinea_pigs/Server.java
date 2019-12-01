@@ -34,6 +34,9 @@ public class Server {
 
 	private static String[] user = new String[max_client]; // store user name -> map with index (hashmap)
 	private static PrintWriter[] ID = new PrintWriter[max_client]; // store user's address -> map with index(hashmap)
+	
+	private static String[] battleUser = new String[max_client]; 
+
 
 	private static final int ROW = 10;
 	private static final int COL = 10;
@@ -377,12 +380,15 @@ public class Server {
 		                  
 		                  //namesList = new ArrayList(names);
 		                  //writersList = new ArrayList(writers);
-		                  System.out.println("msg[0]:" + msg[0]);
+		                  
+		                  battleUser[0] = msg[0]; //battle receiver
+		                  battleUser[1] = name; //battle sender
+		                  System.out.println(battleUser[0]+ " vs " + battleUser[1]);
 		                  
 		                  //String target = msg[0]; 
 		                    for (int i=0; i<user.length; i++) {  // 클라이언트의 수만큼 반복문을 돌면서 
 		                               if (user[i].equals(msg[0]))   // 같은 이름을 찾으면
-		                                  ID[i].println("BATTLE" + ">> "+ name +" : " + msg[1]);  // 해당 유저에게만 내용전달
+		                                  ID[i].println("BATTLE" + " from - "+ name +" : " + msg[1]);  // 해당 유저에게만 내용전달
 		                           }
 					} else if (!inputMessage.equals("")) {
 						sendToallclient("MESSAGE " + name + ": " + inputMessage);
