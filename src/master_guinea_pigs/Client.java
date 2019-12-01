@@ -118,7 +118,7 @@ public class Client implements Runnable {
 				// fw.flush();
 			} else if (line.startsWith("NAMEACCEPTED")) { // if server accept the username
 				textField.setEditable(true);
-				out.println("GAMESTART");// �엫�떆
+				//out.println("GAMESTART");// �엫�떆
 			} else if (line.startsWith("MESSAGE")) { // if client get message protocol the message is for chatting
 				messageArea.append(line.substring(8) + "\n");
 			} else if (line.startsWith("ERROR")) {
